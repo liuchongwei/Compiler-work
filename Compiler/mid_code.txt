@@ -1,20 +1,7 @@
-CONSTOBJ	INTSY	a1	100
-CONSTOBJ	INTSY	a2	-12345
-CONSTOBJ	INTSY	a3	10
-CONSTOBJ	INTSY	a	123456
-CONSTOBJ	INTSY	b	123456789
-CONSTOBJ	CHARSY	b1	+
-CONSTOBJ	CHARSY	b4	/
-CONSTOBJ	CHARSY	b5	A
-CONSTOBJ	CHARSY	b6	0
-CONSTOBJ	CHARSY	abcde	a
 AVAROBJ	CHARSY	symbol	12
-VAROBJ	CHARSY	lalala	
-VAROBJ	INTSY	c1	
-AVAROBJ	INTSY	c2	10
+FUNCOBJ	INTSY	e	
 PARA	INTSY	m	
 PARA	INTSY	n	
-FUNCOBJ	INTSY	e	2
 EQL	m	1	$t0
 JNE	$t0	lable_1	
 MULT	m	n	$t1
@@ -28,85 +15,53 @@ VPARA	$t3	e
 CALL	e		$t4
 LAB		lable_0	
 END		e	
+FUNCOBJ	INTSY	f	
 PARA	INTSY	m	
 PARA	INTSY	n	
-FUNCOBJ	INTSY	e1	2
 MULT	m	n	$t5
-RET		$t5	
-END		e1	
-PARA	INTSY	m	
-PARA	INTSY	n	
-FUNCOBJ	INTSY	f	2
-MULT	m	n	$t6
-MULT	$t6	10	$t7
-RET		$t7	
+MULT	$t5	10	$t6
+RET		$t6	
 END		f	
+FUNCOBJ	CHARSY	g	
+RET		97	
+END		g	
 FUNCOBJ	VOIDSY	main	
 VAROBJ	INTSY	c	
 VAROBJ	INTSY	d	
-BECOM	1		c
-LAB		lable_2	
-LSS	c	10	$t8
-JNE	$t8	lable_3	
-JMP		lable_5	
-LAB		lable_4	
-PLUS	c	1	$t9
-BECOM	$t9		c
+BECOM	9		c
+CALL	g		$t7
+PRINTF		$t7	
+PLUS	97	1	$t8
+LSS	97	$t8	$t9
+JNE	$t9	lable_3	
+PRINTF	#success		
 JMP		lable_2	
-LAB		lable_5	
-BECOM	1		d
-LAB		lable_6	
-LEQ	d	c	$t10
-JNE	$t10	lable_7	
-JMP		lable_9	
-LAB		lable_8	
-PLUS	d	1	$t11
-BECOM	$t11		d
-JMP		lable_6	
-LAB		lable_9	
-VPARA	c	e1	
-VPARA	d	e1	
-CALL	e1		$t12
-PRINTF	@	$t12	
-JMP		lable_8	
-LAB		lable_7	
-JMP		lable_4	
 LAB		lable_3	
-SCANF		c	
-PRINTF	----------c	c	
-SCANF		d	
-PRINTF	----------d	d	
-VPARA	c	e	
-VPARA	d	e	
-CALL	e		$t13
-PRINTF	#	$t13	
-VPARA	c	f	
-VPARA	d	f	
-CALL	f		$t14
-PRINTF	#	$t14	
-BECOM	0		c
-LAB		lable_10	
-PLUS	c	1	$t15
-BECOM	$t15		c
-MINU	c	1	$t16
-MULT	c	d	$t17
-VARRAY	$t17	$t16	c2
-MULT	c	d	$t18
-PRINTF	#	$t18	
-LSS	c	d	$t19
-JEQ	$t19	lable_10	
-BECOM	0		c
-LAB		lable_11	
-LEQ	c	9	$t20
-JNE	$t20	lable_12	
-JMP		lable_14	
-LAB		lable_13	
-PLUS	c	1	$t21
-BECOM	$t21		c
-JMP		lable_11	
-LAB		lable_14	
-AVALUE	c2	c	$t22
-PRINTF	*	$t22	
-JMP		lable_13	
-LAB		lable_12	
+PRINTF	#fail		
+LAB		lable_2	
+NEQ	c	0	$t10
+JNE	$t10	lable_5	
+PRINTF	#haha		
+JMP		lable_4	
+LAB		lable_5	
+LAB		lable_4	
+CALL	g		$t11
+EQL	$t11	97	$t12
+JNE	$t12	lable_7	
+PRINTF	#hahaha		
+JMP		lable_6	
+LAB		lable_7	
+LAB		lable_6	
+MINU	98	97	$t13
+VARRAY	111	$t13	symbol
+MINU	98	97	$t14
+AVALUE	symbol	$t14	$t15
+PRINTF		$t15	
+VPARA	1	f	
+VPARA	1	f	
+CALL	f		$t16
+VPARA	$t16	e	
+VPARA	10	e	
+CALL	e		$t17
+PRINTF		$t17	
 END			main

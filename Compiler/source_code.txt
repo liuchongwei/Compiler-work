@@ -1,9 +1,4 @@
-const int a1 = 100 , a2 = -12345 , a3 = +10;
-const int a = 123456 , b = 123456789;
-const char b1 = '+', b4 = '/' , b5 = 'A' , b6 = '0';
-const char abcde = 'a';
-char symbol[12] , lalala;
-int c1 , c2[10];
+char symbol[12];
 
 int e(int m , int n){
 	if(m == 1){
@@ -13,42 +8,38 @@ int e(int m , int n){
 	}
 }
 
-int e1(int m , int n){
-	return (m*n);
-}
-
 int f(int m , int n){
 	return (m*n*10);
 }
 
+char g(){
+	return ('a');
+}
+
 void main () {
 	int c , d;
+
+	c = 9;
 	
-  	for(c = 1 ; c < 10 ; c = c + 1)
-  	{
-  		for(d = 1 ; d <= c ; d = d + 1)
-	  	{
-			printf("@" , e1(c,d));
-	  	}
-  	}
+	printf(g());
 	
-	scanf(c);
-	printf("--------------" , c);
-	scanf(d);
-	printf("--------------" , d);
-	
-	printf("#" , e(c,d));
-	printf("#" , f(c,d));
-	
-	c = 0;
-	
-	do {
-		c = c+1;
-		c2[c-1] = c*d;
-		printf("#" , c*d);
-	} while(c < d)
-	
-	for(c = 0 ; c <= 9 ; c = c+1){
-		printf("*" , c2[c]);
+	if('a' < 'a'+1){
+		printf("#success");
+	}else{
+		printf("#fail");
 	}
+	
+	if(c){
+		printf("#haha");
+	}
+	
+	if(g() == 'a'){
+		printf("#hahaha");
+	}
+	
+	symbol['b'-'a'] = 'o';
+	
+	printf(symbol['b'-'a']);
+	
+	printf(e(f(1,1) , 10));
 }
