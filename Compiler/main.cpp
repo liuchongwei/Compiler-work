@@ -14,7 +14,7 @@ using namespace std;
 #define LMAX 80 //行缓冲区最大容量
 #define NMAX 30//支持的最大整数长度
 #define TMAX 200//符号表最大长度
-#define FN "source_code.txt" //文件名
+//#define FN "source_code.txt" //文件名
 #define OUTFILE "target_code.asm"
 #define AL 30//标识符最大长度
 #define NORW 13//保留字个数
@@ -410,12 +410,25 @@ int enter(char* name, char* obj, char* typ, value v , int addr , int para , int 
     if(strcmp(obj,"FUNCOBJ") == 0){
         int j;
         for(j = 0 ; j < table.proc_num ; j++){
-            if(strcmp(table.table_elm[j].name , name) == 0){
+            if(strcmp(table.table_elm[table.proc_index[j]].name , name) == 0){
                 error(cc - strlen(token) , 20);
                 return -1;
             }
         }
         table.proc_index[table.proc_num++] = table.tx;
+    } else {
+        int j;
+        if(table.proc_num == 0){
+            j = 0;
+        }else{
+            j = table.proc_index[table.proc_num-1]+1;
+        }
+        for( ; j < table.tx ; j++){
+            if(strcmp(table.table_elm[j].name , name) == 0){
+                error(cc - strlen(token) , 20);
+                return -1;
+            }
+        }
     }
 
 
@@ -2942,10 +2955,13 @@ int main(int argc, char** argv) {
 	strcpy(wsym[10],"SCANFSY");
 	strcpy(wsym[11],"PRINTFSY");
 	strcpy(wsym[12],"RETURNSY");
-/*
+
     char FN[50];
 
-    cin >> FN;*/
+    cin >> FN;
+
+    table.tx = 0;
+    table.proc_num = 0;
 
 	if((FP = fopen(FN,"r")) == NULL)
 	{
