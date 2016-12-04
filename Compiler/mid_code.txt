@@ -1,67 +1,316 @@
-AVAROBJ	CHARSY	symbol	12
-FUNCOBJ	INTSY	e	
-PARA	INTSY	m	
-PARA	INTSY	n	
-EQL	m	1	$t0
+CONSTOBJ	INTSY	one	1
+CONSTOBJ	INTSY	two	2
+AVAROBJ	CHARSY	array	100
+VAROBJ	CHARSY	ch	
+FUNCOBJ	CHARSY	isDigit	
+PARA	CHARSY	c1	
+GEQ	c1	48	$t0
 JNE	$t0	lable_1	
-MULT	m	n	$t1
-RET		$t1	
-JMP		lable_0	
-LAB		lable_1	
-MINU	m	1	$t2
-VPARA	$t2	e	
-PLUS	n	1	$t3
-VPARA	$t3	e	
-CALL	e		$t4
-LAB		lable_0	
-END		e	
-FUNCOBJ	INTSY	f	
-PARA	INTSY	m	
-PARA	INTSY	n	
-MULT	m	n	$t5
-MULT	$t5	10	$t6
-RET		$t6	
-END		f	
-FUNCOBJ	CHARSY	g	
-RET		97	
-END		g	
-FUNCOBJ	VOIDSY	main	
-VAROBJ	INTSY	c	
-VAROBJ	INTSY	d	
-BECOM	9		c
-CALL	g		$t7
-PRINTF		$t7	
-PLUS	97	1	$t8
-LSS	97	$t8	$t9
-JNE	$t9	lable_3	
-PRINTF	#success		
+LEQ	c1	57	$t1
+JNE	$t1	lable_3	
+RET		49	
 JMP		lable_2	
 LAB		lable_3	
-PRINTF	#fail		
+RET		48	
 LAB		lable_2	
-NEQ	c	0	$t10
-JNE	$t10	lable_5	
-PRINTF	#haha		
+JMP		lable_0	
+LAB		lable_1	
+LAB		lable_0	
+RET		48	
+END		isDigit	
+FUNCOBJ	INTSY	isLetter	
+PARA	CHARSY	c1	
+EQL	c1	95	$t2
+JNE	$t2	lable_5	
+RET		1	
 JMP		lable_4	
 LAB		lable_5	
-LAB		lable_4	
-CALL	g		$t11
-EQL	$t11	97	$t12
-JNE	$t12	lable_7	
-PRINTF	#hahaha		
+GEQ	c1	97	$t3
+JNE	$t3	lable_7	
+LEQ	c1	122	$t4
+JNE	$t4	lable_9	
+RET		1	
+JMP		lable_8	
+LAB		lable_9	
+RET		0	
+LAB		lable_8	
 JMP		lable_6	
 LAB		lable_7	
+GEQ	c1	65	$t5
+JNE	$t5	lable_11	
+LEQ	c1	90	$t6
+JNE	$t6	lable_13	
+RET		1	
+JMP		lable_12	
+LAB		lable_13	
+LAB		lable_12	
+JMP		lable_10	
+LAB		lable_11	
+LAB		lable_10	
 LAB		lable_6	
-MINU	98	97	$t13
-VARRAY	111	$t13	symbol
-MINU	98	97	$t14
-AVALUE	symbol	$t14	$t15
-PRINTF		$t15	
-VPARA	1	f	
-VPARA	1	f	
-CALL	f		$t16
-VPARA	$t16	e	
-VPARA	10	e	
-CALL	e		$t17
-PRINTF		$t17	
+LAB		lable_4	
+RET		0	
+END		isLetter	
+FUNCOBJ	VOIDSY	dient	
+PARA	INTSY	length	
+CONSTOBJ	CHARSY	true	T
+CONSTOBJ	CHARSY	flase	F
+VAROBJ	INTSY	i	
+BECOM	0		i
+AVALUE	array	0	$t7
+VPARA	$t7	isLetter	
+CALL	isLetter		$t8
+EQL	$t8	1	$t9
+JNE	$t9	lable_15	
+BECOM	1		i
+LAB		lable_16	
+LSS	i	length	$t10
+JNE	$t10	lable_17	
+JMP		lable_19	
+LAB		lable_18	
+PLUS	i	1	$t11
+BECOM	$t11		i
+JMP		lable_16	
+LAB		lable_19	
+AVALUE	array	i	$t12
+VPARA	$t12	isLetter	
+CALL	isLetter		$t13
+NEQ	$t13	0	$t14
+JNE	$t14	lable_21	
+JMP		lable_20	
+LAB		lable_21	
+AVALUE	array	i	$t15
+VPARA	$t15	isDigit	
+CALL	isDigit		$t16
+EQL	$t16	49	$t17
+JNE	$t17	lable_23	
+JMP		lable_22	
+LAB		lable_23	
+PLUS	length	1	$t18
+BECOM	$t18		i
+LAB		lable_22	
+LAB		lable_20	
+JMP		lable_18	
+LAB		lable_17	
+EQL	i	length	$t19
+JNE	$t19	lable_25	
+PRINTF		true	
+JMP		lable_24	
+LAB		lable_25	
+PRINTF		flase	
+LAB		lable_24	
+JMP		lable_14	
+LAB		lable_15	
+PRINTF		flase	
+LAB		lable_14	
+END		dient	
+FUNCOBJ	INTSY	sum	
+PARA	INTSY	n	
+PARA	INTSY	m	
+VAROBJ	INTSY	i	
+VAROBJ	INTSY	res	
+BECOM	0		res
+BECOM	n		i
+LAB		lable_26	
+PLUS	res	i	$t20
+BECOM	$t20		res
+PLUS	i	1	$t21
+BECOM	$t21		i
+LEQ	i	m	$t22
+JEQ	$t22	lable_26	
+RET		res	
+END		sum	
+FUNCOBJ	VOIDSY	printASCII	
+PRINTF	hello world!		
+END		printASCII	
+FUNCOBJ	INTSY	toInt	
+PARA	CHARSY	c	
+MINU	c	48	$t23
+RET		$t23	
+END		toInt	
+FUNCOBJ	VOIDSY	kongkong	
+END		kongkong	
+FUNCOBJ	INTSY	fib	
+PARA	INTSY	n	
+EQL	n	1	$t24
+JNE	$t24	lable_28	
+RET		1	
+JMP		lable_27	
+LAB		lable_28	
+LAB		lable_27	
+EQL	n	2	$t25
+JNE	$t25	lable_30	
+RET		1	
+JMP		lable_29	
+LAB		lable_30	
+MINU	n	1	$t26
+VPARA	$t26	fib	
+CALL	fib		$t27
+MINU	n	2	$t28
+VPARA	$t28	fib	
+CALL	fib		$t29
+PLUS	$t27	$t29	$t30
+RET		$t30	
+LAB		lable_29	
+END		fib	
+FUNCOBJ	VOIDSY	relation	
+PARA	CHARSY	c1	
+PARA	CHARSY	c2	
+LEQ	c1	c2	$t31
+JNE	$t31	lable_32	
+PRINTF		c1	
+PRINTF	<= 	c2	
+PRINTF	  		
+JMP		lable_31	
+LAB		lable_32	
+LAB		lable_31	
+LSS	c1	c2	$t32
+JNE	$t32	lable_34	
+PRINTF		c1	
+PRINTF	< 	c2	
+PRINTF	  		
+JMP		lable_33	
+LAB		lable_34	
+LAB		lable_33	
+GEQ	c1	c2	$t33
+JNE	$t33	lable_36	
+PRINTF		c1	
+PRINTF	>= 	c2	
+PRINTF	  		
+JMP		lable_35	
+LAB		lable_36	
+LAB		lable_35	
+GTR	c1	c2	$t34
+JNE	$t34	lable_38	
+PRINTF		c1	
+PRINTF	> 	c2	
+PRINTF	  		
+JMP		lable_37	
+LAB		lable_38	
+LAB		lable_37	
+NEQ	c1	c2	$t35
+JNE	$t35	lable_40	
+PRINTF		c1	
+PRINTF	!= 	c2	
+PRINTF	  		
+JMP		lable_39	
+LAB		lable_40	
+LAB		lable_39	
+EQL	c1	c2	$t36
+JNE	$t36	lable_42	
+PRINTF		c1	
+PRINTF	==	c2	
+PRINTF	  		
+JMP		lable_41	
+LAB		lable_42	
+LAB		lable_41	
+RET			
+END		relation	
+FUNCOBJ	VOIDSY	main	
+CONSTOBJ	CHARSY	CA	a
+CONSTOBJ	CHARSY	cc1	1
+CONSTOBJ	CHARSY	cc2	2
+CONSTOBJ	CHARSY	cc3	3
+CONSTOBJ	INTSY	three	3
+VAROBJ	INTSY	index	
+VAROBJ	INTSY	res	
+VAROBJ	INTSY	input1	
+VAROBJ	INTSY	input2	
+VAROBJ	INTSY	input3	
+VAROBJ	INTSY	express1	
+VAROBJ	INTSY	express2	
+VAROBJ	INTSY	express3	
+VAROBJ	CHARSY	ca	
+VAROBJ	CHARSY	cA	
+BECOM	CA		ca
+BECOM	65		cA
+SCANF		input1	
+SCANF		input2	
+SCANF		input3	
+PLUS	0	-2	$t37
+PLUS	input1	input2	$t38
+PLUS	$t38	input3	$t39
+PLUS	$t37	$t39	$t40
+PRINTF		$t40	
+PRINTF	  		
+BECOM	0		index
+LAB		lable_43	
+LEQ	index	25	$t41
+JNE	$t41	lable_44	
+JMP		lable_46	
+LAB		lable_45	
+PLUS	index	1	$t42
+BECOM	$t42		index
+JMP		lable_43	
+LAB		lable_46	
+VARRAY	cA	index	array
+PLUS	cA	1	$t43
+BECOM	$t43		cA
+JMP		lable_45	
+LAB		lable_44	
+VARRAY	49	26	array
+VPARA	27	dient	
+CALL	dient		
+VARRAY	49	0	array
+VPARA	1	dient	
+CALL	dient		
+BECOM	97		cA
+BECOM	0		index
+LAB		lable_47	
+LEQ	index	25	$t44
+JNE	$t44	lable_48	
+JMP		lable_50	
+LAB		lable_49	
+PLUS	index	1	$t45
+BECOM	$t45		index
+JMP		lable_47	
+LAB		lable_50	
+VARRAY	cA	index	array
+PLUS	cA	1	$t46
+BECOM	$t46		cA
+JMP		lable_49	
+LAB		lable_48	
+VARRAY	49	26	array
+VPARA	27	dient	
+CALL	dient		
+BECOM	1		index
+LAB		lable_51	
+VPARA	index	fib	
+CALL	fib		$t47
+PRINTF	  	$t47	
+PLUS	index	1	$t48
+BECOM	$t48		index
+LEQ	index	10	$t49
+JEQ	$t49	lable_51	
+PRINTF	  		
+VPARA	cc1	relation	
+VPARA	cc1	relation	
+CALL	relation		
+VPARA	cc1	relation	
+VPARA	cc2	relation	
+CALL	relation		
+VPARA	cc3	relation	
+VPARA	cc2	relation	
+CALL	relation		
+CALL	kongkong		
+VPARA	cc1	toInt	
+CALL	toInt		$t50
+PRINTF		$t50	
+VPARA	50	toInt	
+CALL	toInt		$t51
+PRINTF		$t51	
+PRINTF	   		
+CALL	printASCII		
+PRINTF	   		
+VPARA	1	sum	
+VPARA	100	sum	
+CALL	sum		$t52
+PRINTF		$t52	
+BECOM	CA		ca
+LAB		lable_52	
+PRINTF		ca	
+PLUS	ca	1	$t53
+BECOM	$t53		ca
+LEQ	ca	122	$t54
+JEQ	$t54	lable_52	
 END			main

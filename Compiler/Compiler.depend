@@ -1,0 +1,12 @@
+# depslib dependency file v1.0
+1480859099 source:f:\mydocument\githubfiles\compiler\compiler-work\compiler\main.cpp
+	<iostream>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<vector>
+	<sstream>
+	<string>
+	<fstream>
+	<algorithm>
+

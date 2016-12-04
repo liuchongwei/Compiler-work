@@ -13,13 +13,13 @@ using namespace std;
 #define FMAX 100//源文件最大行数
 #define LMAX 80 //行缓冲区最大容量
 #define NMAX 30//支持的最大整数长度
-#define TMAX 100//符号表最大长度
+#define TMAX 200//符号表最大长度
 #define FN "source_code.txt" //文件名
 #define OUTFILE "target_code.asm"
-#define AL 20//标识符最大长度
+#define AL 30//标识符最大长度
 #define NORW 13//保留字个数
 #define PMAX 100//最大分程序数
-#define CMAX 200//四元式个数
+#define CMAX 450//四元式个数
 #define PARAMAX 10//函数参数个数
 
 #define INITSTACK 0x7fffeffc
@@ -57,7 +57,8 @@ struct value {
 };
 
 struct funcelm{
-    vector<char*> paratyp;
+    int returnnum;
+    int paratyp[6];//0为int,1为char
 };
 
 struct tabitem {
@@ -82,7 +83,7 @@ maintable table;//符号表
 int paranum = 0;//实参形参个数
 
 struct mcode{
-    char op[10] , v1[10] , v2[10] , v3[10];
+    char op[AL] , v1[50] , v2[AL] , v3[AL];
 };
 
 mcode midcode[CMAX];
@@ -92,7 +93,7 @@ int labnum = 0;//标签数目
 vector<char*> tmpreg;//临时寄存器
 char curobj[20];
 char curtyp[20];
-char op[20] , v1[20] , v2[20] , v3[20];
+char op[AL] , v1[50] , v2[AL] , v3[AL];
 
 
 /////////////////////////////////////////////////
@@ -110,7 +111,7 @@ int ax = 0;
 int fx = 0;//函数数目
 
 int sp = 0;//相对地址
-int hp = 0;
+int hp = 4;//第一个data为"\n"
 int fp = 0;//帧指针
 int ismain = 0;
 int isglob = 0;//是不是全局变量、常量
@@ -118,6 +119,10 @@ int tmplab = 0;
 int vtmpreg = 2;//t2~t7
 int ptmpreg = 2;
 /////////////////////////////////////////////////////////
+/*
+char strs[30][50];
+int strnum = 0;*/
+
 int Expression();
 int rFuncCall(int adr);
 int Sentence();
@@ -153,8 +158,12 @@ int isDigit(){
 int isNum(char* str){
     int i = 0;
     while(str[i] != '\0'){
-        if(str[i]<'0' || str[i]>'9')
-            return 0;
+        if(str[i]<'0' || str[i]>'9'){
+            if(i == 0 && (str[i] == '+' || str[i] == '-'))
+                ;
+            else
+                return 0;
+        }
         i++;
     }
     return 1;
@@ -299,12 +308,15 @@ int getsym(){
 			token[k++] = '=';
 			getch();
 		}else{
-			//TODO error
+			error(cc-strlen(token)-1 , 20);
 		}
 	} else if(ch == '\"'){
 		k = 0;
+		token[k] = '\0';
 		getch();
-		while(ch == 32 || ch == 33 || (ch <= 126 && ch >= 35)){
+		while(ch == ' ' || ch == 32 || ch == 33 || (ch <= 126 && ch >= 35)){
+            if(k >= 50)
+                error(cc-strlen(token)-1 , 20);
 			token[k++] = ch;
 			getch();
 		}
@@ -313,7 +325,7 @@ int getsym(){
 			getch();
 		}
 		else{
-			//TODO error
+			error(cc-strlen(token)-1 , 20);
 		}
 	}else if(ch == '\''){
 		getch();
@@ -321,13 +333,13 @@ int getsym(){
 			token[k++] = ch;
 			getch();
 		}else{
-			//TODO error
+			error(cc-strlen(token)-1 , 20);
 		}
 		if(ch == '\''){
 			strcpy(sym,"CHARCON");
 			getch();
 		} else {
-			//TODO error
+			error(cc-strlen(token)-1 , 20);
 		}
 	} else {
 		if ( ch == '+' ){
@@ -420,6 +432,14 @@ int enter(char* name, char* obj, char* typ, value v , int addr , int para , int 
 	table.table_elm[table.tx++] = i;
 	return table.tx-1;
 }
+/*
+char* enterstrs(char* s){
+    char strlab[10];
+    strcpy(strs[strnum++] , s);
+    strcpy(strlab , "STR");
+    strcat(strlab , num2str(strnum-1));
+    return strlab;
+}*/
 
 int Position(char* name , int tag){
 	int i;
@@ -735,6 +755,7 @@ int Parameters(int tabadr){
 	char typ[AL];
 	char obj[] = "VAROBJ";
 	value v;
+	int i = 0;
 
 	if(strcmp(sym , "INTSY") == 0 || strcmp(sym , "CHARSY") == 0){
 		strcpy(typ , sym);
@@ -756,13 +777,22 @@ int Parameters(int tabadr){
 		fillmidcode();
 
 		table.table_elm[tabadr].para++;
-		table.table_elm[tabadr].parastyp.paratyp.push_back(typ);
+
+		if(strcmp(typ , "INTSY") == 0)
+            table.table_elm[tabadr].parastyp.paratyp[i] = 0;
+        else
+            table.table_elm[tabadr].parastyp.paratyp[i] = 1;
+        i++;
+
 		getsym();
 	} else {
 		error(cc - strlen(token) , 20);
 	}
 
 	while(strcmp(sym , "COMMA") == 0){
+        if(i >= 5){
+            error(cc - strlen(token) , 20);
+        }
 		getsym();
 		if(strcmp(sym , "INTSY") == 0 || strcmp(sym , "CHARSY") == 0){
 			strcpy(typ , sym);
@@ -781,6 +811,13 @@ int Parameters(int tabadr){
             fillmidcode();
 
 			table.table_elm[tabadr].para++;
+
+			if(strcmp(typ , "INTSY") == 0)
+                table.table_elm[tabadr].parastyp.paratyp[i] = 0;
+            else
+                table.table_elm[tabadr].parastyp.paratyp[i] = 1;
+            i++;
+
 			getsym();
 		} else {
 			error(cc - strlen(token) , 20);
@@ -789,7 +826,6 @@ int Parameters(int tabadr){
 
 	return 0;
 }
-//	PLUS MINU IDENT CHARCON NUM ZERO LPARENT
 
 int Factor(){
 	printf("This is 因子\n");
@@ -830,7 +866,7 @@ int Factor(){
         }
 		return 0;
 	} else if(strcmp(sym , "CHARCON") == 0){
-		strcpy(curobj , token);
+		strcpy(curobj , num2str((int)token[0]));
 		strcpy(curtyp , "CHARCON");
 		getsym();
 		return 0;
@@ -861,6 +897,10 @@ int Factor(){
 
 		getsym();
 		Expression();
+
+		if(!(strcmp(curtyp , "INTSY") == 0 || strcmp(curtyp , "INTCON") == 0)){
+            error(cc-strlen(token)+1 , 20);
+		}
 
 		if(strcmp(sym , "RBRACK") == 0){
 
@@ -908,7 +948,7 @@ int Factor(){
 }
 
 int Item(){
-    char tmpop[10] , tmpv1[10] , tmptyp[10];
+    char tmpop[10] , tmpv1[10];
 	printf("This is 项\n");
 	//test
 	Factor();
@@ -916,22 +956,13 @@ int Item(){
 	while(strcmp(sym , "MULT") == 0 || strcmp(sym , "DIV") == 0){
         strcpy(tmpop ,  sym);
         strcpy(tmpv1 , curobj);
-        strcpy(tmptyp , curtyp);
 
 		getsym();
 		Factor();
 
         strcpy(op , tmpop);
-        if(strcmp(tmptyp , "CHARCON") == 0){
-            int i = (int)(tmpv1[0]);
-            strcpy(v1 , num2str(i));
-        }else
-            strcpy(v1 , tmpv1);
-        if(strcmp(curtyp , "CHARCON") == 0){
-            int i = (int)(curobj[0]);
-            strcpy(v2 , num2str(i));
-        }else
-            strcpy(v2 , curobj);
+        strcpy(v1 , tmpv1);
+        strcpy(v2 , curobj);
 		strcpy(v3 , nexttmp());
 		fillmidcode();
 
@@ -945,7 +976,7 @@ int Item(){
 int Expression(){
 	printf("This is 表达式\n");
 	//test
-	char tmpop[10] , tmpv1[10] , tmptyp[10];
+	char tmpop[10] , tmpv1[10];
 
 	if(strcmp(sym , "PLUS") == 0 || strcmp(sym , "MINU") == 0){
 		strcpy(tmpop , sym);
@@ -957,11 +988,7 @@ int Expression(){
     if(strcmp(tmpop , "PLUS") == 0 || strcmp(tmpop , "MINU") == 0){
         strcpy(op , tmpop);
         strcpy(v1 , "0");
-        if(strcmp(curtyp , "CHARCON") == 0){
-            int i = (int)(curobj[0]);
-            strcpy(v1 , num2str(i));
-        }else
-            strcpy(v2 , curobj);
+        strcpy(v2 , curobj);
         strcpy(v3 , nexttmp());
         fillmidcode();
 
@@ -972,22 +999,13 @@ int Expression(){
 	while(strcmp(sym , "PLUS") == 0 || strcmp(sym , "MINU") == 0){
         strcpy(tmpop , sym);
         strcpy(tmpv1 , curobj);
-        strcpy(tmptyp , curtyp);
 
 		getsym();
 		Item();
 
         strcpy(op , tmpop);
-        if(strcmp(tmptyp , "CHARCON") == 0){
-            int i = (int)(tmpv1[0]);
-            strcpy(v1 , num2str(i));
-        }else
-            strcpy(v1 , tmpv1);
-        if(strcmp(curtyp , "CHARCON") == 0){
-            int i = (int)(curobj[0]);
-            strcpy(v2 , num2str(i));
-        }else
-            strcpy(v2 , curobj);
+        strcpy(v1 , tmpv1);
+        strcpy(v2 , curobj);
 		strcpy(v3 , nexttmp());
 		fillmidcode();
 
@@ -1001,19 +1019,26 @@ int Expression(){
 }
 
 int valuepara(int adr){
-    int paranum = 0;
+    int i = 0;//值参数个数
 	printf("This is 值参数表\n");
 	if(strcmp(sym , "RPARENT") == 0){
 		return 0;
 	}
 
 	Expression();
-    paranum++;
 
-/*    if(strcmp(table.table_elm[adr].parastyp.paratyp[paranum-1] , curtyp) != 0){
+    if(i < table.table_elm[adr].para)
+        i++;
+    else
         error(cc-strlen(token)+1 , 20);
-        return -1;
-    }*/
+
+    if(strcmp(curtyp , "INTSY") == 0 || strcmp(curtyp , "INTCON") == 0){
+        if(table.table_elm[adr].parastyp.paratyp[i-1] != 0)
+            error(cc-strlen(token)+1 , 20);
+    } else if(strcmp(curtyp , "CHARSY") == 0 || strcmp(curtyp , "CHARCON") == 0){
+        if(table.table_elm[adr].parastyp.paratyp[i-1] != 1)
+            error(cc-strlen(token)+1 , 20);
+    }
 
     strcpy(op , "VPARA");
     strcpy(v1 , curobj);
@@ -1024,12 +1049,19 @@ int valuepara(int adr){
 	while(strcmp(sym , "COMMA") == 0){
 		getsym();
 		Expression();
-		paranum++;
 
-/*		if(strcmp(table.table_elm[adr].parastyp.paratyp[paranum-1] , curtyp) != 0){
+		if(i < table.table_elm[adr].para)
+            i++;
+        else
             error(cc-strlen(token)+1 , 20);
-            return -1;
-        }*/
+
+        if(strcmp(curtyp , "INTSY") == 0 || strcmp(curtyp , "INTCON") == 0){
+            if(table.table_elm[adr].parastyp.paratyp[i-1] != 0)
+                error(cc-strlen(token)+1 , 20);
+        } else if(strcmp(curtyp , "CHARSY") == 0 || strcmp(curtyp , "CHARCON") == 0){
+            if(table.table_elm[adr].parastyp.paratyp[i-1] != 1)
+                error(cc-strlen(token)+1 , 20);
+        }
 
         strcpy(op , "VPARA");
         strcpy(v1 , curobj);
@@ -1037,20 +1069,21 @@ int valuepara(int adr){
         strcpy(v3 , "\0");
         fillmidcode();
 	}
-	return paranum;
+	return i;
 }
 
 int vFuncCall(int adr){
 	printf("This is 无返回值函数调用\n");
+	int paranum = 0;
 	if(strcmp(sym , "LPARENT") == 0){
 		getsym();
-		valuepara(adr);
+		paranum = valuepara(adr);
 	} else {
 		error(cc - strlen(token) , 20);
 	}
 
     if(paranum != table.table_elm[adr].para){
-        return -1;
+        error(cc-strlen(token)+1 , 20);
     }
 
 	if(strcmp(sym , "RPARENT") == 0){
@@ -1082,7 +1115,7 @@ int rFuncCall(int adr){
 	}
 
     if(paranum != table.table_elm[adr].para){
-        return -1;
+        error(cc-strlen(token)+1 , 20);
     }
 
 	if(strcmp(sym , "RPARENT") == 0){
@@ -1106,149 +1139,91 @@ int rFuncCall(int adr){
 }
 
 int Condition(){
-    char tmpop[10] , tmpv1[10] , tmptyp[10];
+    char tmpop[10] , tmpv1[10];
 	printf("This is 条件\n");
 	Expression();
 
 	if(strcmp(sym , "EQL") == 0){
 		strcpy(tmpop , sym);
 		strcpy(tmpv1 , curobj);
-		strcpy(tmptyp , curtyp);
 
 		getsym();
 		Expression();
 
         strcpy(op , tmpop);
-        if(strcmp(tmptyp , "CHARCON") == 0){
-            int i = (int)(tmpv1[0]);
-            strcpy(v1 , num2str(i));
-        }else
-            strcpy(v1 , tmpv1);
-        if(strcmp(curtyp , "CHARCON") == 0){
-            int i = (int)(curobj[0]);
-            strcpy(v2 , num2str(i));
-        }else
-            strcpy(v2 , curobj);
+        strcpy(v1 , tmpv1);
+        strcpy(v2 , curobj);
 		strcpy(v3 , nexttmp());
 		fillmidcode();
 		strcpy(curobj , v3);
 	} else if(strcmp(sym , "NEQ") == 0) {
 		strcpy(tmpop , sym);
 		strcpy(tmpv1 , curobj);
-		strcpy(tmptyp , curtyp);
 
 		getsym();
 		Expression();
 
         strcpy(op , tmpop);
-        if(strcmp(tmptyp , "CHARCON") == 0){
-            int i = (int)(tmpv1[0]);
-            strcpy(v1 , num2str(i));
-        }else
-            strcpy(v1 , tmpv1);
-        if(strcmp(curtyp , "CHARCON") == 0){
-            int i = (int)(curobj[0]);
-            strcpy(v2 , num2str(i));
-        }else
-            strcpy(v2 , curobj);
+        strcpy(v1 , tmpv1);
+        strcpy(v2 , curobj);
 		strcpy(v3 , nexttmp());
 		fillmidcode();
 		strcpy(curobj , v3);
 	} else if(strcmp(sym , "GTR") == 0) {
 		strcpy(tmpop , sym);
 		strcpy(tmpv1 , curobj);
-		strcpy(tmptyp , curtyp);
 
 		getsym();
 		Expression();
 
         strcpy(op , tmpop);
-        if(strcmp(tmptyp , "CHARCON") == 0){
-            int i = (int)(tmpv1[0]);
-            strcpy(v1 , num2str(i));
-        }else
-            strcpy(v1 , tmpv1);
-        if(strcmp(curtyp , "CHARCON") == 0){
-            int i = (int)(curobj[0]);
-            strcpy(v2 , num2str(i));
-        }else
-            strcpy(v2 , curobj);
+        strcpy(v1 , tmpv1);
+        strcpy(v2 , curobj);
 		strcpy(v3 , nexttmp());
 		fillmidcode();
 		strcpy(curobj , v3);
 	} else if(strcmp(sym , "GEQ") == 0) {
 		strcpy(tmpop , sym);
 		strcpy(tmpv1 , curobj);
-		strcpy(tmptyp , curtyp);
 
 		getsym();
 		Expression();
 
         strcpy(op , tmpop);
-        if(strcmp(tmptyp , "CHARCON") == 0){
-            int i = (int)(tmpv1[0]);
-            strcpy(v1 , num2str(i));
-        }else
-            strcpy(v1 , tmpv1);
-        if(strcmp(curtyp , "CHARCON") == 0){
-            int i = (int)(curobj[0]);
-            strcpy(v2 , num2str(i));
-        }else
-            strcpy(v2 , curobj);
+        strcpy(v1 , tmpv1);
+        strcpy(v2 , curobj);
 		strcpy(v3 , nexttmp());
 		fillmidcode();
 		strcpy(curobj , v3);
 	} else if(strcmp(sym , "LSS") == 0) {
 		strcpy(tmpop , sym);
 		strcpy(tmpv1 , curobj);
-		strcpy(tmptyp , curtyp);
 
 		getsym();
 		Expression();
 
         strcpy(op , tmpop);
-        if(strcmp(tmptyp , "CHARCON") == 0){
-            int i = (int)(tmpv1[0]);
-            strcpy(v1 , num2str(i));
-        }else
-            strcpy(v1 , tmpv1);
-        if(strcmp(curtyp , "CHARCON") == 0){
-            int i = (int)(curobj[0]);
-            strcpy(v2 , num2str(i));
-        }else
-            strcpy(v2 , curobj);
+        strcpy(v1 , tmpv1);
+        strcpy(v2 , curobj);
 		strcpy(v3 , nexttmp());
 		fillmidcode();
 		strcpy(curobj , v3);
 	} else if(strcmp(sym , "LEQ") == 0) {
 		strcpy(tmpop , sym);
 		strcpy(tmpv1 , curobj);
-		strcpy(tmptyp , curtyp);
 
 		getsym();
 		Expression();
 
         strcpy(op , tmpop);
-        if(strcmp(tmptyp , "CHARCON") == 0){
-            int i = (int)(tmpv1[0]);
-            strcpy(v1 , num2str(i));
-        }else
-            strcpy(v1 , tmpv1);
-        if(strcmp(curtyp , "CHARCON") == 0){
-            int i = (int)(curobj[0]);
-            strcpy(v2 , num2str(i));
-        }else
-            strcpy(v2 , curobj);
+        strcpy(v1 , tmpv1);
+        strcpy(v2 , curobj);
 		strcpy(v3 , nexttmp());
 		fillmidcode();
 		strcpy(curobj , v3);
 	} else if (strcmp(sym , "RPARENT") == 0 || strcmp(sym , "SEMICOLON") == 0){
         strcpy(op , "NEQ");
-        if(strcmp(curtyp , "CHARCON") == 0){
-            int i = (int)(curobj[0]);
-            strcpy(v1 , num2str(i));
-        }else
-            strcpy(v1 , curobj);
+        strcpy(v1 , curobj);
 		strcpy(v2 , "0");
 		strcpy(v3 , nexttmp());
 		fillmidcode();
@@ -1406,6 +1381,10 @@ int ForSentence(){
 		getsym();
 		Expression();
 
+/*        if(!(strcmp(curtyp , "INTSY") == 0 || strcmp(curtyp , "INTCON") == 0)){
+            error(cc - strlen(token) , 24);
+        }*/
+
         strcpy(op , "BECOM");
         strcpy(v1 , curobj);
         strcpy(v2 , "\0");
@@ -1555,11 +1534,9 @@ int BecomeSentence(char *name){
 	int adr = Position(name , 1);
 	char tmpv2[10];
 
-	//TPDO =前后类型不一致
-/*	if(strcmp(table.table_elm[adr].obj , "VAROBJ") != 0){
-		error(cc - strlen(token) , 24);
-		return -1;
-	}*/
+	if(strcmp(table.table_elm[adr].obj , "CONSTOBJ") == 0){
+        error(cc - strlen(token) , 24);
+	}
 
 	if(strcmp(sym , "LBRACK") == 0){
 		if(table.table_elm[adr].size == 0){
@@ -1570,11 +1547,7 @@ int BecomeSentence(char *name){
 		getsym();
 		Expression();//如果不是整数
 
-        if(strcmp(curtyp , "CHARCON") == 0){
-            int i = (int)(curobj[0]);
-            strcpy(tmpv2 , num2str(i));
-        }else
-            strcpy(tmpv2 , curobj);
+        strcpy(tmpv2 , curobj);
 
 		if(strcmp(sym , "RBRACK") == 0){
 			getsym();
@@ -1589,14 +1562,22 @@ int BecomeSentence(char *name){
 		}
 
 		Expression();
-//		fillmidcode("VARRAY" , v1 , v2 , table.table_elm[adr].name);
+/*		fillmidcode("VARRAY" , v1 , v2 , table.table_elm[adr].name);
+
+        if(strcmp(table.table_elm[adr].typ , "INTSY") == 0){
+            if(strcmp(curtyp , "INTSY") == 0 || strcmp(curtyp , "INTCON") == 0){
+                ;
+            } else
+                error(cc - strlen(token) , 24);
+        } else if(strcmp(table.table_elm[adr].typ , "CHARSY") == 0){
+            if(strcmp(curtyp , "CHARSY") == 0 || strcmp(curtyp , "CHARCON") == 0){
+                ;
+            } else
+                error(cc - strlen(token) , 24);
+        }*/
 
         strcpy(op , "VARRAY");
-        if(strcmp(curtyp , "CHARCON") == 0){
-            int i = (int)(curobj[0]);
-            strcpy(v1 , num2str(i));
-        }else
-            strcpy(v1 , curobj);
+        strcpy(v1 , curobj);
         strcpy(v2 , tmpv2);
         strcpy(v3 , table.table_elm[adr].name);
         fillmidcode();
@@ -1610,13 +1591,22 @@ int BecomeSentence(char *name){
 		getsym();
 		Expression();
 
-//		fillmidcode("BECOM" , curobj , "\0" , table.table_elm[adr].name);
+/*		fillmidcode("BECOM" , curobj , "\0" , table.table_elm[adr].name);
+
+        if(strcmp(table.table_elm[adr].typ , "INTSY") == 0){
+            if(strcmp(curtyp , "INTSY") == 0 || strcmp(curtyp , "INTCON") == 0){
+                ;
+            } else
+                error(cc - strlen(token) , 24);
+        } else if(strcmp(table.table_elm[adr].typ , "CHARSY") == 0){
+            if(strcmp(curtyp , "CHARSY") == 0 || strcmp(curtyp , "CHARCON") == 0){
+                ;
+            } else
+                error(cc - strlen(token) , 24);
+        }*/
+
         strcpy(op , "BECOM");
-        if(strcmp(curtyp , "CHARCON") == 0){
-            int i = (int)(curobj[0]);
-            strcpy(v1 , num2str(i));
-        }else
-            strcpy(v1 , curobj);
+        strcpy(v1 , curobj);
         strcpy(v2 , "\0");
         strcpy(v3 , table.table_elm[adr].name);
         fillmidcode();
@@ -1776,16 +1766,22 @@ int ReturnSentence(){
 	} else {
 		error(cc - strlen(token) , 24);
 	}
+/*
+    if(strcmp(curtyp , "INTSY") == 0 || strcmp(curtyp , "INTCON") == 0){
+        if(strcmp(table.table_elm[table.proc_index[table.proc_num-1]].typ , "INTSY") != 0)
+            error(cc - strlen(token) , 24);
+    } else if(strcmp(curtyp , "CHARSY") == 0 || strcmp(curtyp , "CHARCON") == 0){
+        if(strcmp(table.table_elm[table.proc_index[table.proc_num-1]].typ , "CHARSY") != 0)
+            error(cc - strlen(token) , 24);
+    }*/
+
+    table.table_elm[table.proc_index[table.proc_num-1]].parastyp.returnnum++;
 
 	if(strcmp(sym , "RPARENT") == 0){
 //        fillmidcode("RET" , "\0" , curobj , "\0" );
         strcpy(op , "RET");
         strcpy(v1 , "\0");
-        if(strcmp(curtyp , "CHARCON") == 0){
-            int i = (int)(curobj[0]);
-            strcpy(v2 , num2str(i));
-        }else
-            strcpy(v2 , curobj);
+        strcpy(v2 , curobj);
         strcpy(v3 , "\0");
         fillmidcode();
 		getsym();
@@ -1905,6 +1901,7 @@ int rFuncDef(){
 
 	if(strcmp(sym , "IDENT") == 0){
 		tabadr = enter(token, obj, typ, v, 0, 0, 0);//TODO 插入失败输出错误程序结束
+        table.table_elm[tabadr].parastyp.returnnum = 0;
 
 		getsym();
 	} else {
@@ -1941,6 +1938,11 @@ int rFuncDef(){
 	if(strcmp(sym , "RBRACE") == 0){
 
 //        fillmidcode("END" , "\0" , table.table_elm[tabadr].name , "\0");
+
+        if(table.table_elm[table.proc_index[table.proc_num-1]].parastyp.returnnum == 0){
+            error(cc - strlen(token) , 15);
+        }
+
         strcpy(op , "END");
         strcpy(v1 , "\0");
         strcpy(v2 , table.table_elm[tabadr].name);
@@ -1967,6 +1969,7 @@ int vFuncDef(){
 
 	if(strcmp(sym , "IDENT") == 0){
 		tabadr = enter(token, obj, typ, v, 0, 0, 0);//TODO 插入失败输出错误程序结束
+		table.table_elm[tabadr].parastyp.returnnum = 0;
 
 		getsym();
 	} else {
@@ -2003,6 +2006,10 @@ int vFuncDef(){
 	if(strcmp(sym , "RBRACE") == 0){
 
 //        fillmidcode("END" , "\0" , table.table_elm[tabadr].name , "\0");
+        if(table.table_elm[table.proc_index[table.proc_num-1]].parastyp.returnnum != 0){
+            error(cc - strlen(token) , 15);
+        }
+
         strcpy(op , "END");
         strcpy(v1 , "\0");
         strcpy(v2 , table.table_elm[tabadr].name);
@@ -2126,7 +2133,9 @@ int Procedure(){
 //TODO全局变量、常量都放在堆中
 
 int interpret(){
-    rsT << "\t.text"<<endl;
+    rsT<<"\t.data"<<endl;
+    rsT<<"NewLine:"<<".asciiz\t"<<"\"\\n\""<<endl;
+    rsT<<"\t.text"<<endl;
     rsT<<"\taddu\t$fp\t$sp\t$0"<< endl;
     rsT<<"\tori\t$t9\t$0\t"<< INITDATA << endl;
 
@@ -2593,16 +2602,19 @@ void VARRAYasm() {
     } else {
         //求数组元素a[i]地址
         addrt = varaddr(midcode[tpc].v2);//addrt = &i
-        if (isglob)
+        if (isglob){
             rsT << "\tlw\t$t1\t" << addrt << "($t9)" << endl;    //t1 = i
-        else
+        }else{
             rsT << "\tlw\t$t1\t" << addrt << "($fp)" << endl;    //t1 = i
+        }
         rsT << "\tmul\t$t1\t$t1\t4\n";    //t1 = t1 * 4 (t1 = offset)
-        rsT << "\taddi\t$t1\t$t1\t" << addr1 << endl;    //t1 = &a[i] - $fp
-        if(tisglob)
+        if(tisglob){
+            rsT << "\taddi\t$t1\t$t1\t" << addr1 << endl;    //t1 = &a[i] - $fp
             rsT << "\tadd\t$t1\t$t1\t$t9" << endl;
-        else
-            rsT << "\tadd\t$t1\t$t1\t$fp" << endl;
+        }else{
+            rsT << "\tsubi\t$t1\t$t1\t" << addr1 << endl;    //t1 = &a[i] - $fp
+            rsT << "\tsub\t$t1\t$fp\t$t1" << endl;
+        }
         if (isNum(midcode[ tpc ].v1) || isChar(midcode[ tpc ].v1)) {
             rsT << "\tli\t$t0\t" << midcode[tpc].v1 << endl;
         } else {
@@ -2641,14 +2653,17 @@ void AVALUEasm() {
         int addrt = varaddr(midcode[tpc].v2);//addrt = &i
         if ( isglob ) {
             rsT << "\tlw\t$t1\t" << addrt << "($t9)" << endl;    //t1 = i
-        }else
+        }else{
             rsT << "\tlw\t$t1\t" << addrt << "($fp)" << endl;    //t1 = i
+        }
         rsT << "\tmul\t$t1\t$t1\t4\n";    //t1 = t1 * 4 (t1 = offset)
-        rsT << "\taddi\t$t1\t$t1\t" << addr1 << endl;    //t1 = &a[i] - $fp
-        if(tisglob)
+        if(tisglob){
+            rsT << "\taddi\t$t1\t$t1\t" << addr1 << endl;    //t1 = &a[i] - $fp
             rsT << "\tadd\t$t1\t$t1\t$t9" << endl;
-        else
-            rsT << "\tadd\t$t1\t$t1\t$fp" << endl;
+        }else{
+            rsT << "\tsubi\t$t1\t$t1\t" << addr1 << endl;    //t1 = &a[i] - $fp
+            rsT << "\tsub\t$t1\t$fp\t$t1" << endl;
+        }
         rsT << "\tlw\t$t1\t0($t1)\n";    //t1 = a[i]
         addr2 = varaddr(midcode[tpc].v3);    //addr2 = &b
         if (isglob)
@@ -2692,17 +2707,22 @@ void PRINTFasm() {
             rsT << "\tli\t$a0\t" << int(midcode[tpc].v1[i]) << endl;
             rsT << "\tsyscall" << endl;
         }
+/*        rsT <<"li $v0, 4 # system call code for print_str"<<endl;
+        rsT <<"la $a0, NewLine"<<endl;
+        rsT <<"syscall # print the string"<<endl;*/
     }
     if (midcode[tpc].v2[ 0 ] != '\0' ) {
         if (strcmp(midcode[tpc].v3, "CHARCON") == 0 ) {
             rsT << "\tli\t$v0\t11" << endl;
             rsT << "\tli\t$a0\t" << midcode[tpc].v2 << endl;
             rsT << "\tsyscall" << endl;
+            tpc++;
             return;
         } else if (strcmp(midcode[tpc].v3, "INTCON") == 0 ) {
             rsT << "\tli\t$v0\t1" << endl;
             rsT << "\tli\t$a0\t" << midcode[tpc].v2 << endl;
             rsT << "\tsyscall" << endl;
+            tpc++;
             return;
         }
         addr = varaddr(midcode[tpc].v2);
@@ -2722,6 +2742,9 @@ void PRINTFasm() {
             rsT << "\tsyscall" << endl;
         }
     }
+    rsT <<"li $v0, 4 # system call code for print_str"<<endl;
+    rsT <<"la $a0, NewLine"<<endl;
+    rsT <<"syscall # print the string"<<endl;
     tpc++;
 }
 
@@ -2758,7 +2781,6 @@ void CALLasm() {
     }
     tpc++;
 }
-
 
 //RET ,   ,   , (a)   ==> return a / return
 void RETasm() {
@@ -2920,6 +2942,10 @@ int main(int argc, char** argv) {
 	strcpy(wsym[10],"SCANFSY");
 	strcpy(wsym[11],"PRINTFSY");
 	strcpy(wsym[12],"RETURNSY");
+/*
+    char FN[50];
+
+    cin >> FN;*/
 
 	if((FP = fopen(FN,"r")) == NULL)
 	{
