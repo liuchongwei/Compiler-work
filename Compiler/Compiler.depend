@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1480554881 source:f:\mydocument\codeblocks_file\complier\main.cpp
+1480859099 source:f:\mydocument\githubfiles\compiler\compiler-work\compiler\main.cpp
 	<iostream>
 	<stdio.h>
 	<stdlib.h>

@@ -1,0 +1,772 @@
+const int a1 = 100 , a2 = -12345 , a3 = +10;
+const int a = 123456 , b = 123456789;
+const char b1 = '+', b4 = '/' , b5 = 'A' , b6 = '0';
+const char abcde = 'a';
+char symbol[100] , lalala;
+int c1 , c2[10];
+
+int e(int m , int n){
+	if(m == 1){
+		return (m*n);
+	}else{
+		e(m-1 , n+1);
+	}
+}
+
+int e1(int m , int n){
+	return (m*n);
+}
+
+int f(int m , int n){
+	return (m*n*10);
+}
+
+char g(){
+	return ('a');
+}
+
+void main () {
+	int c , d;
+	
+  	for(c = 1 ; c < 10 ; c = c + 1)
+  	{
+  		for(d = 1 ; d <= c ; d = d + 1)
+	  	{
+			printf("@" , e1(c,d));
+	  	}
+  	}
+	
+	scanf(c);
+	printf("--------------" , c);
+	scanf(d);
+	printf("--------------" , d);
+	
+	printf("#" , e(c,d));
+	printf("#" , f(c,d));
+	
+	c = 0;
+	
+	do {
+		c = c+1;
+		c2[c-1] = c*d;
+		printf("#" , c*d);
+	} while(c <= d)
+	
+	for(c = 0 ; c <= 9 ; c = c+1){
+		printf("*" , c2[c]);
+	}
+	
+	printf(g());
+	
+	if('a' < 'a'+1){
+		printf("#success");
+	}else{
+		printf("#fail");
+	}
+	
+	if(c){
+		printf("#haha");
+	}
+	
+	if(g() == 'a'){
+		printf("#hahaha");
+	}
+	
+	symbol['b'-1] = 'o';
+	
+	printf(e(f(1,1) , 10));
+}
+
+
+	printf(symbol['a']);
+	if('a'){
+		printf("#hahaha");
+	}
+	
+	
+	
+	
+	
+	
+？ TFT  1  1  2  3  5  8  13  21  34  55  1<= 1  1>= 1  1==1  1<= 2  1< 2  1!= 2  3>= 2  3> 2  3!= 2  12   
+hello world!
+5050abcdefghijklmnopqrstuvwxyz	
+	
+	
+	
+	
+	
+const int one=1,two=2;
+char array[100],ch;
+char isDigit(char c1){
+    if(c1>='0'){
+        if(c1<='9')
+            return('1');
+        else
+            return('0');
+    }
+    return('0');
+}
+int isLetter(char c1){
+    if(c1=='_')
+        return(1);
+    else if(c1>='a'){
+        if(c1<='z'){
+            return(1);
+        }
+        else
+            return(0);
+    }
+    else if(c1>='A'){
+        if(c1<='Z'){
+            return(1);
+        }
+    }
+    return(0);
+}
+void dient(int length){
+    const char true = 'T',flase='F';
+    int i;
+    i=0;
+    if(isLetter(array[0])==1){
+        for(i=1;i<length;i=i+1){
+            if(isLetter(array[i])){
+                ;
+            }
+            else if(isDigit(array[i])=='1'){
+                ;
+            }
+            else
+                i=length+1;
+        }
+        if(i==length){
+            printf(true);
+        }
+        else
+            printf(flase);
+    }
+    else{
+        printf(flase);
+    }
+}
+int sum(int n ,int m){
+    int i;
+    int res;
+    res =0;
+    i=n;
+    do{
+        res=res+i;
+        i=i+1;
+    }
+    while(i<=m);
+    return (res);
+}
+void printASCII(){ 
+    printf("hello world!");
+}
+int toInt(char c){
+    return (c-'0');
+}
+void kongkong(){
+    
+}
+int fib(int n){ 
+    if(n==1){
+        return(1);
+    }
+    if(n==2){
+        return(1);
+    }
+    else{
+        return(fib(n-1)+fib(n-2));
+    }
+}
+void relation(char c1,char c2){ 
+    if(c1<=c2){
+        printf(c1);
+        printf("<= ",c2);
+        printf("  ");
+    }
+    if(c1<c2){
+        printf(c1);
+        printf("< ",c2);
+        printf("  ");
+    }
+    if(c1>=c2){
+        printf(c1);
+        printf(">= ",c2);
+        printf("  ");
+    }
+    if(c1>c2){
+        printf(c1);
+        printf("> ",c2);
+        printf("  ");
+    }
+    if(c1 != c2){
+        printf(c1);
+        printf("!= ",c2);
+        printf("  ");
+    }
+    if(c1==c2){
+        printf(c1);
+        printf("==",c2);
+        printf("  ");
+    }
+    return;
+}
+void main(){
+    const char CA='a',cc1='1',cc2='2',cc3='3';
+    const int three=3;
+    int index,res,input1,input2,input3,express1,express2,express3;
+    char ca,cA;
+    ca=CA;
+    cA='A';
+    scanf(input1);  
+    scanf(input2,input3);
+    printf(--2+(input1+input2+input3));
+    printf("  ");
+    for(index=0;index<=25;index=index+1){
+        array[index]=cA;
+        cA=cA+1;
+    }
+    array[26]='1';
+    dient(27);
+    array[0]='1';
+    dient(1);
+    cA='a';
+    for(index=0;index<=25;index=index+1){
+        array[index]=cA;
+        cA=cA+1;
+    }
+    array[26]='1';
+    dient(27);
+    index=1;
+    do{
+        printf("  ",fib(index));
+        index=index+1;
+    }while(index<=10);
+    printf("  ");
+    relation(cc1,cc1);
+    relation(cc1,cc2);
+    relation(cc3,cc2);
+    kongkong();
+    printf(toInt(cc1));
+    printf(toInt('2'));
+    printf("   ");
+    printASCII();
+    printf("   ");
+    printf(sum(1,100));
+    ca=CA;
+    do{
+        printf(ca);
+        ca=ca+1;
+    }while(ca<='z');
+}	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+const int cInt1=+10,cInt2=-1;
+const int cInt3=0;
+const int cMaxInt=2147483647,cMinInt=-2147483648;
+const int cmaxint=2147483647;
+const char cChar0='_',cChar1='a',cChar2='A',cChar3='+',cChar4='*';
+const char cChar5='0';
+int _,_9,__,_a;
+int a1;
+char _A;
+int a2,a3[10],a4[1],a5;
+char A2[1],A3[20],A4;
+void PrintHelloWorld(){
+    int cInt2;
+    cInt2=233;
+    printf(" !#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~");
+    printf("");
+    printf("helloworld!");
+    printf('*');
+    printf(cChar0);
+    printf(cInt1);
+    printf(cInt2);
+    return;
+}
+int SquareSum(int _a,int b){
+    const int unuse=0;
+    int temp;
+    temp=-_a*-1;
+    temp=+_a*0;
+    temp=_a*unuse;
+    temp=_a*_a;
+    temp=-(-_a*_a)+(b*b);
+    return (temp);
+}
+void _myStop(){
+    char temp;
+    printf("input a char and enter:");
+    scanf(temp);
+}
+int NsquareSum(int temp,int times){
+    int noneUse[10];
+    int Temp;
+    Temp=temp;
+    if(times==1)
+        return (temp);
+    Temp=Temp*NsquareSum(temp,times-1);
+    return (((Temp)));
+}
+char NextAlphabet(char x){
+    return (x+1);
+}
+
+void testswitch(int num){
+    if(num == 0){printf("result:0");return ;}
+    if(num == +1){scanf(temp1);printf("result:",temp1+10-10);return ;}
+    if(num == +2){scanf(temp1,temp2);printf("result:",SquareSum(temp1+0,temp2-2+2));return ;}
+    
+	if(num>0){
+	temp2=0;
+	do{
+		scanf(temp1);
+		temp2=temp2+NsquareSum(temp1,num);
+		i=i+1;
+	}while(i<num)
+	a3[0]=temp2;
+	printf("result:",a3[0]);}
+}
+
+void main(){
+    int num;
+    int temp1,temp2;
+    char abc[3];
+    int intArray[1];
+    int i,j,k;
+    PrintHelloWorld();
+    printf("please input number counts:");
+    scanf(num);
+    i=0;
+    _a=666;
+    intArray[0]=-20;
+    printf(intArray[0]);
+    abc[0]='a';
+    abc[1]='b';
+    abc[2]='c';
+    printf(NextAlphabet(abc[0]));
+    if(_a>intArray[0]){
+        _a=intArray[0]-1;
+    }
+    printf("_a is",_a);
+    if(_a<intArray[0]){
+        _a=2;
+    }
+    printf("_a is",_a);
+    if(_a==2){
+        _a=intArray[0]*2;
+    }
+    printf("_a is",_a);
+    if(_a!=intArray[0]){
+        _a=4;
+    }
+    printf("_a is",_a);
+    if(_a>=+4){
+        _a=-0;
+    }
+    printf("_a is",_a);
+    if(_a<=+0){
+        printf("if ok....perhaps",_a);
+        _a=666;
+    }
+    printf("_a is",_a);
+
+	testswitch(num);
+    
+    _myStop();
+    i=(NsquareSum(1,1));
+    printf("");
+    k=temp1+temp2;
+    i=temp1+temp2;
+    j=temp1;
+    j=j+temp2;
+    _myStop();
+    return;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+const int const_a=+1, const_b=-210;
+const char const_c='+',const_d='*',const_e='a',const_f='1';
+
+int a[12],b,c[10];
+char _abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ;
+
+int funa(int d,int e)
+{
+    const int const_c=2;
+    int f;
+    
+    if(d==e)
+        d=e;
+    else if(d>e)
+    {
+        if(d>=e);
+    }
+    if(d<e)
+        if(d<=e)
+            if(d!=e)
+                if(2);
+    
+    do
+        d=e;
+    while (d!=e)
+    
+    for(f=0;f<10;f=f+1);
+    
+    funa(d,e);
+    func();
+    
+    d=+d;
+    d=-d+d;
+    d=a[1]*d/d+1+funa(d,e)+(d)+'2';
+    return(1);
+    return;
+    scanf(d,e);
+    printf("123",d);
+    printf("123");
+    printf(d);
+}
+
+int funb()
+{
+    ;
+}
+
+void func()
+{
+}
+
+int fib(int x)
+{
+    if(x==1)
+        return 1;
+    else if(x==2)
+        return 1;
+    else
+        return(fib(x-1)+fib(x-2));
+}
+
+void main()
+{
+    int i,in1,in2,in3;
+    int out;
+    out=0;
+    for(i=1;i<10;i++)
+        c[i]=0;
+    scanf(in1);
+    scanf(in2);
+    scanf(in3);
+    if(in1<5)
+        c[9]=in1;
+    out=c[3*(3*4/12)+6];
+    out=out+in2*in3;
+    out=out+fib(in1);
+    printf(out);
+    funa(1,2);
+    funa(2,1);
+    funa(1,1);
+    funb();
+    func();
+}
+
+
+
+
+
+
+
+
+const int num1=1,num_2=-2,num_0=0;
+const int num_a=0;
+const char ch_a='a',ch_0 = '0',ch__='_',ch_star='*',ch_plus='-';
+const char ch_B = 'B';
+
+int num3,num4,num_arry1[3];
+int num5;
+
+char ch_c,ch_d,ch2,ch_arry1[2];
+char ch_minus;
+
+void v_func_add(int x){
+    x = x +1;
+    printf("x+1=",x);
+}
+void v_func_ret(){
+    printf("void return check ok");
+    return;
+    printf("failed");
+}
+int i_func_return_1(){
+    return (1);
+}
+int i_func_add(int y){
+    
+    return (y+1);
+}
+void i_func_calc(int a,int b){
+    const int c = 100;
+    int ans;
+    num3 = 100;
+    ans = a -b + c * num_2 + num3;
+    printf("simple expression");
+    printf("ans = a - b + 100 *2 + num3 = ",ans);
+    printf("complex expression:");
+    printf("3a-50=");
+    printf( (num1-num_2)*a + ( num_0/b + (num_0* 5 - (c/i_func_add(num1)) ) )   );
+}
+char c_func_return_d(){
+    printf("return 'd'");
+    return ('c'+1);
+}
+char c_func_ch_calc(char ch,int n){
+    char t;
+    n = 1;
+    t = ch + n ;
+    printf("ch+1=",t); 
+    return (t);
+}
+void main(){
+    const int m = 0;
+    int n;
+    
+    v_func_add(m);
+    v_func_ret();
+
+    printf("return 1 check");
+    n =i_func_return_1();
+    if(n==1)
+        printf("ok");
+
+    n = 3;
+    i_func_calc(num_2,n);
+
+    printf(c_func_return_d());
+
+    scanf(ch_c);
+    printf(c_func_ch_calc(ch_c,num3));
+
+}
+
+
+
+
+
+
+
+const int num1=1,num_2=-2,num_0=0;
+const int num_a=0;
+const char ch_a='a',ch_0 = '0',ch__='_',ch_star='*',ch_plus='-';
+const char ch_B = 'B';
+
+int num3,num4,num_arry1[3];
+int num5;
+
+char ch_c,ch_d,ch2,ch_arry1[2];
+char ch_minus;
+
+int i_func_return_1(){
+    return (1);
+}
+int i_func_add(int y){
+    
+    return (y+1);
+}
+void func_if_cmp(){
+    num5 = 1;
+    if(num5 == 2){
+        printf("== check failed");
+    }
+    num5 = i_func_add(num5);
+    if(num5 ==2 )
+        printf("== check ok");
+    
+    if(num5 != 2){
+        printf("!= check failed");
+    }
+    num5 = i_func_return_1();
+    if (num5 != 2){
+        printf("return 1 check ok");
+        printf("!= check ok");
+    }
+
+    if(num5 > 5){
+        ;
+        printf("> check failed");
+    }else{
+        printf("else check ok");
+        printf("> check ok");
+    }
+    num5 = 5;
+    if(num5 <5){
+        printf("< check failed");
+    }
+    else printf("< check ok");
+    num5 =4;
+    if(num5 >= 5){
+        printf(">= check failed");
+    }
+    num5 =5;
+    if(num5 >= 5){
+        printf("5>=5 check ok");
+    }
+    num5 = 6;
+    if(num5 >= 5){
+        printf("6>=5 check ok");
+    }
+    num5=6;
+    if( num5 <= 5){
+        printf("<= check failed");
+
+    }
+    num5 =5;
+    if(num5 <=5){
+        printf("5<=5 check ok");
+    }
+    num5 =4;
+    if(num5 <=5){
+            printf("4<=5 check ok");
+    }
+    if(num5 <= 10){
+        if(num5 != 9){
+            if(num5 == 4){
+                printf("multiple if check ok");
+            }
+            else printf("multiple if check failed1");
+        }else printf("multiple if check failed2");
+    }else printf("multiple if check failed3");
+}
+void func_while(){
+    const int len = 3;
+    num5 = 0;
+    do{
+        printf("while for 3 times");
+        num5 = num5+1;
+    }while(num5 < len)
+    do{
+        if(num5 > 0)
+            printf("while if num5 > 0 for 3 times");
+        num5 = num5-1;
+    }while(num5 > 0)
+}
+void main(){
+
+    func_if_cmp();
+
+    func_while();
+
+}
+
+
+const int b=10,c=-10,d=+10;
+const char str = 'b';
+char _x;
+int fibs[10];
+int abs(int a){
+    if(a>0)
+        return (a);
+    else
+        return (-a);
+}
+void factor(int a){
+    int i,j;
+    i=abs(a);
+    do{
+        j=a/i;
+        if(a==i*j)
+            printf("factor ",i);
+        i=i-1;
+    }while(i>0)
+}
+int oddif(int a){
+    int i;
+    i=2;
+    a=abs(a);
+    if(a==0)
+        return (0);
+    if(a==1)
+        return (1);
+    do{
+        a=a-i;
+    }while(a>1)
+    if(a!=0){
+        return (1);
+    }
+    else{
+        return (0);
+    }
+}
+int fibonacci(int a){
+    if (a==1)
+        return (1);
+    if (a==2)
+        return (2);
+    else
+        return (fibonacci(a-1)+fibonacci(a-2));
+}
+void main()
+{
+    int i;
+    char temp,ch,lstr[10];
+    temp='+';
+    ch='a';
+    i=0;
+    do{
+        if(ch<=31){
+            lstr[i]='0';
+            i=i+1;
+        }else{
+            lstr[i]=ch;
+            i=i+1;
+        }
+        ch=ch+1;
+    }while(i<10)
+    for(i=9;i>=0;i=i-1){
+        printf(lstr[i]);
+    }
+    scanf(i,_x);
+    printf("input is ",i);
+    printf("input is ",_x);
+    printf("test abs ",abs(i));
+    printf("test factor ");
+    factor(i);
+    for (i=0;i<10;i=i+1){
+        fibs[i]=fibonacci(i+1);
+    }
+    i=0;
+    do{
+        factor(fibs[i]);
+        i=i+1;
+    }while (i<6);
+    i=0;
+    do{
+        if(oddif(fibs[i])==1)
+            printf(i);
+        i=i+1;
+    }while (i<10)
+    i=+-10+b*(fibs[fibs[b-8]])*str-b+1-b/5+-3*5;
+    printf(i);
+    printf("program end");
+    return;
+}
