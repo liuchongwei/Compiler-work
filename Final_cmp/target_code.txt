@@ -1,0 +1,824 @@
+	.data
+NewLine:.asciiz	"\n"
+	.text
+	addu	$fp	$sp	$0
+	ori	$t9	$0	268500992
+	li	$t0	10	#a=10
+	li	$t1	268500996
+	sw	$t0	($t1)
+	j	_END_1
+choose_pivot:
+__FSTART_LAB_1:
+	sw	$fp	($sp)
+	add	$fp	$sp	$0
+	subi	$sp	$sp	4
+	sw	$ra	($sp)
+	subi	$sp	$sp	4
+#PARA	INTSY	i	1
+	addi	$t0	$fp	8
+	lw	$t1	($t0)
+	sw	$t1	($sp)
+	subi	$sp	$sp	4
+#PARA	INTSY	j	2
+	addi	$t0	$fp	4
+	lw	$t1	($t0)
+	sw	$t1	($sp)
+	subi	$sp	$sp	4
+#PLUS	i	j	$t0
+	subi	$sp	$sp	4
+#DIV	$t0	2	$t1
+	subi	$sp	$sp	4
+#PLUS	i	j	$t0
+	lw	$t0	-8($fp)
+	lw	$t1	-12($fp)
+	add	$t0	$t0	$t1
+	sw	$t0	-16($fp)
+#DIV	$t0	2	$t1
+	lw	$t0	-16($fp)
+	li	$t1	2
+	div	$t0	$t0	$t1
+	sw	$t0	-20($fp)
+#RET		$t1	
+	lw	$v0	-20($fp)
+	j	__FEND_LAB_1
+__FEND_LAB_1:
+	lw	$ra	-4($fp)
+	add	$sp	$fp	$0
+	addi	$sp	$sp	8
+	lw	$fp	($fp)
+	jr	$ra	
+_END_1:
+	j	_END_2
+printlist:
+__FSTART_LAB_2:
+	sw	$fp	($sp)
+	add	$fp	$sp	$0
+	subi	$sp	$sp	4
+	sw	$ra	($sp)
+	subi	$sp	$sp	4
+#PARA	INTSY	n	1
+	addi	$t0	$fp	4
+	lw	$t1	($t0)
+	sw	$t1	($sp)
+	subi	$sp	$sp	4
+	subi	$sp	$sp	4
+	subi	$sp	$sp	4
+#LSS	i	n	$t2
+	subi	$sp	$sp	4
+#PLUS	j	1	$t3
+	subi	$sp	$sp	4
+#AVALUE	list	i	$t4
+	subi	$sp	$sp	4
+#PLUS	i	1	$t5
+	subi	$sp	$sp	4
+#BECOM	0		i
+	li	$t0	0
+	sw	$t0	-16($fp)
+#BECOM	0		j
+	li	$t0	0
+	sw	$t0	-12($fp)
+#LAB		lable_0	
+lable_0:
+#LSS	i	n	$t2
+	lw	$t0	-16($fp)
+	lw	$t1	-8($fp)
+	slt	$t0	$t0	$t1
+#JNE	$t2	lable_1	
+	bne	$t0	1	lable_1
+#JMP		lable_3	
+	j	lable_3
+#LAB		lable_2	
+lable_2:
+#PLUS	j	1	$t3
+	lw	$t0	-12($fp)
+	li	$t1	1
+	add	$t0	$t0	$t1
+	sw	$t0	-24($fp)
+#BECOM	$t3		j
+	lw	$t0	-24($fp)
+	sw	$t0	-12($fp)
+#JMP		lable_0	
+	j	lable_0
+#LAB		lable_3	
+lable_3:
+#AVALUE	list	i	$t4
+	lw	$t1	-16($fp)
+	mul	$t1	$t1	4
+	addi	$t1	$t1	8
+	add	$t1	$t1	$t9
+	lw	$t1	0($t1)
+	sw	$t1	-28($fp)
+#PRINTF		$t4	
+	li	$v0	1
+	lw	$a0	-28($fp)
+	syscall
+li $v0, 4 # system call code for print_str
+la $a0, NewLine
+syscall # print the string
+#PLUS	i	1	$t5
+	lw	$t0	-16($fp)
+	li	$t1	1
+	add	$t0	$t0	$t1
+	sw	$t0	-32($fp)
+#BECOM	$t5		i
+	lw	$t0	-32($fp)
+	sw	$t0	-16($fp)
+#JMP		lable_2	
+	j	lable_2
+#LAB		lable_1	
+lable_1:
+__FEND_LAB_2:
+	lw	$ra	-4($fp)
+	add	$sp	$fp	$0
+	addi	$sp	$sp	4
+	lw	$fp	($fp)
+	jr	$ra	
+_END_2:
+	j	_END_3
+quicksort:
+__FSTART_LAB_3:
+	sw	$fp	($sp)
+	add	$fp	$sp	$0
+	subi	$sp	$sp	4
+	sw	$ra	($sp)
+	subi	$sp	$sp	4
+#PARA	INTSY	m	1
+	addi	$t0	$fp	8
+	lw	$t1	($t0)
+	sw	$t1	($sp)
+	subi	$sp	$sp	4
+#PARA	INTSY	n	2
+	addi	$t0	$fp	4
+	lw	$t1	($t0)
+	sw	$t1	($sp)
+	subi	$sp	$sp	4
+	subi	$sp	$sp	4
+	subi	$sp	$sp	4
+	subi	$sp	$sp	4
+	subi	$sp	$sp	4
+	subi	$sp	$sp	4
+	subi	$sp	$sp	4
+#CALL	choose_pivot		$t6
+	subi	$sp	$sp	4
+#AVALUE	list	$t6	$t7
+	subi	$sp	$sp	4
+#LEQ	x	y	$t8
+	subi	$sp	$sp	4
+#PLUS	test1	1	$t9
+	subi	$sp	$sp	4
+#AVALUE	list	y	$t10
+	subi	$sp	$sp	4
+#LSS	key	$t10	$t11
+	subi	$sp	$sp	4
+#PLUS	test1	1	$t12
+	subi	$sp	$sp	4
+#MINU	y	1	$t13
+	subi	$sp	$sp	4
+#AVALUE	list	x	$t14
+	subi	$sp	$sp	4
+#GTR	key	$t14	$t15
+	subi	$sp	$sp	4
+#PLUS	test1	1	$t16
+	subi	$sp	$sp	4
+#PLUS	x	1	$t17
+	subi	$sp	$sp	4
+#LEQ	x	y	$t18
+	subi	$sp	$sp	4
+#AVALUE	list	x	$t19
+	subi	$sp	$sp	4
+#AVALUE	list	y	$t20
+	subi	$sp	$sp	4
+#PLUS	x	1	$t21
+	subi	$sp	$sp	4
+#MINU	y	1	$t22
+	subi	$sp	$sp	4
+#LSS	x	n	$t23
+	subi	$sp	$sp	4
+#LSS	m	y	$t24
+	subi	$sp	$sp	4
+#VPARA	m	choose_pivot	
+	lw	$t0	-8($fp)
+	sw	$t0	($sp)
+	subi	$sp	$sp	4
+#VPARA	n	choose_pivot	
+	lw	$t0	-12($fp)
+	sw	$t0	($sp)
+	subi	$sp	$sp	4
+#CALL	choose_pivot		$t6
+	jal	choose_pivot
+	sw	$v0	-40($fp)
+#AVALUE	list	$t6	$t7
+	lw	$t1	-40($fp)
+	mul	$t1	$t1	4
+	addi	$t1	$t1	8
+	add	$t1	$t1	$t9
+	lw	$t1	0($t1)
+	sw	$t1	-44($fp)
+#BECOM	$t7		key
+	lw	$t0	-44($fp)
+	sw	$t0	-16($fp)
+#BECOM	m		x
+	lw	$t0	-8($fp)
+	sw	$t0	-20($fp)
+#BECOM	n		y
+	lw	$t0	-12($fp)
+	sw	$t0	-24($fp)
+#BECOM	0		test1
+	li	$t0	0
+	sw	$t0	-36($fp)
+#LAB		lable_4	
+lable_4:
+#LEQ	x	y	$t8
+	lw	$t0	-20($fp)
+	lw	$t1	-24($fp)
+	slt	$t0	$t1	$t0
+	li	$t1	1
+	sub	$t0	$t1	$t0
+#JNE	$t8	lable_5	
+	bne	$t0	1	lable_5
+#JMP		lable_7	
+	j	lable_7
+#LAB		lable_6	
+lable_6:
+#PLUS	test1	1	$t9
+	lw	$t0	-36($fp)
+	li	$t1	1
+	add	$t0	$t0	$t1
+	sw	$t0	-52($fp)
+#BECOM	$t9		test1
+	lw	$t0	-52($fp)
+	sw	$t0	-36($fp)
+#JMP		lable_4	
+	j	lable_4
+#LAB		lable_7	
+lable_7:
+#BECOM	0		test1
+	li	$t0	0
+	sw	$t0	-36($fp)
+#LAB		lable_8	
+lable_8:
+#AVALUE	list	y	$t10
+	lw	$t1	-24($fp)
+	mul	$t1	$t1	4
+	addi	$t1	$t1	8
+	add	$t1	$t1	$t9
+	lw	$t1	0($t1)
+	sw	$t1	-56($fp)
+#LSS	key	$t10	$t11
+	lw	$t0	-16($fp)
+	lw	$t1	-56($fp)
+	slt	$t0	$t0	$t1
+#JNE	$t11	lable_9	
+	bne	$t0	1	lable_9
+#JMP		lable_11	
+	j	lable_11
+#LAB		lable_10	
+lable_10:
+#PLUS	test1	1	$t12
+	lw	$t0	-36($fp)
+	li	$t1	1
+	add	$t0	$t0	$t1
+	sw	$t0	-64($fp)
+#BECOM	$t12		test1
+	lw	$t0	-64($fp)
+	sw	$t0	-36($fp)
+#JMP		lable_8	
+	j	lable_8
+#LAB		lable_11	
+lable_11:
+#MINU	y	1	$t13
+	lw	$t0	-24($fp)
+	li	$t1	1
+	sub	$t0	$t0	$t1
+	sw	$t0	-68($fp)
+#BECOM	$t13		y
+	lw	$t0	-68($fp)
+	sw	$t0	-24($fp)
+#JMP		lable_10	
+	j	lable_10
+#LAB		lable_9	
+lable_9:
+#BECOM	0		test1
+	li	$t0	0
+	sw	$t0	-36($fp)
+#LAB		lable_12	
+lable_12:
+#AVALUE	list	x	$t14
+	lw	$t1	-20($fp)
+	mul	$t1	$t1	4
+	addi	$t1	$t1	8
+	add	$t1	$t1	$t9
+	lw	$t1	0($t1)
+	sw	$t1	-72($fp)
+#GTR	key	$t14	$t15
+	lw	$t0	-16($fp)
+	lw	$t1	-72($fp)
+	slt	$t0	$t1	$t0
+#JNE	$t15	lable_13	
+	bne	$t0	1	lable_13
+#JMP		lable_15	
+	j	lable_15
+#LAB		lable_14	
+lable_14:
+#PLUS	test1	1	$t16
+	lw	$t0	-36($fp)
+	li	$t1	1
+	add	$t0	$t0	$t1
+	sw	$t0	-80($fp)
+#BECOM	$t16		test1
+	lw	$t0	-80($fp)
+	sw	$t0	-36($fp)
+#JMP		lable_12	
+	j	lable_12
+#LAB		lable_15	
+lable_15:
+#PLUS	x	1	$t17
+	lw	$t0	-20($fp)
+	li	$t1	1
+	add	$t0	$t0	$t1
+	sw	$t0	-84($fp)
+#BECOM	$t17		x
+	lw	$t0	-84($fp)
+	sw	$t0	-20($fp)
+#JMP		lable_14	
+	j	lable_14
+#LAB		lable_13	
+lable_13:
+#LEQ	x	y	$t18
+	lw	$t0	-20($fp)
+	lw	$t1	-24($fp)
+	slt	$t0	$t1	$t0
+	li	$t1	1
+	sub	$t0	$t1	$t0
+#JNE	$t18	lable_17	
+	bne	$t0	1	lable_17
+#AVALUE	list	x	$t19
+	lw	$t1	-20($fp)
+	mul	$t1	$t1	4
+	addi	$t1	$t1	8
+	add	$t1	$t1	$t9
+	lw	$t1	0($t1)
+	sw	$t1	-92($fp)
+#BECOM	$t19		tmp
+	lw	$t0	-92($fp)
+	sw	$t0	-32($fp)
+#AVALUE	list	y	$t20
+	lw	$t1	-24($fp)
+	mul	$t1	$t1	4
+	addi	$t1	$t1	8
+	add	$t1	$t1	$t9
+	lw	$t1	0($t1)
+	sw	$t1	-96($fp)
+#VARRAY	$t20	x	list
+	lw	$t1	-20($fp)
+	mul	$t1	$t1	4
+	addi	$t1	$t1	8
+	add	$t1	$t1	$t9
+	lw	$t0	-96($fp)
+	sw	$t0	0($t1)
+#VARRAY	tmp	y	list
+	lw	$t1	-24($fp)
+	mul	$t1	$t1	4
+	addi	$t1	$t1	8
+	add	$t1	$t1	$t9
+	lw	$t0	-32($fp)
+	sw	$t0	0($t1)
+#PLUS	x	1	$t21
+	lw	$t0	-20($fp)
+	li	$t1	1
+	add	$t0	$t0	$t1
+	sw	$t0	-100($fp)
+#BECOM	$t21		x
+	lw	$t0	-100($fp)
+	sw	$t0	-20($fp)
+#MINU	y	1	$t22
+	lw	$t0	-24($fp)
+	li	$t1	1
+	sub	$t0	$t0	$t1
+	sw	$t0	-104($fp)
+#BECOM	$t22		y
+	lw	$t0	-104($fp)
+	sw	$t0	-24($fp)
+#JMP		lable_16	
+	j	lable_16
+#LAB		lable_17	
+lable_17:
+#LAB		lable_16	
+lable_16:
+#JMP		lable_6	
+	j	lable_6
+#LAB		lable_5	
+lable_5:
+#LSS	x	n	$t23
+	lw	$t0	-20($fp)
+	lw	$t1	-12($fp)
+	slt	$t0	$t0	$t1
+#JNE	$t23	lable_19	
+	bne	$t0	1	lable_19
+#VPARA	x	quicksort	
+	lw	$t0	-20($fp)
+	sw	$t0	($sp)
+	subi	$sp	$sp	4
+#VPARA	n	quicksort	
+	lw	$t0	-12($fp)
+	sw	$t0	($sp)
+	subi	$sp	$sp	4
+#CALL	quicksort		
+	jal	quicksort
+#JMP		lable_18	
+	j	lable_18
+#LAB		lable_19	
+lable_19:
+#LAB		lable_18	
+lable_18:
+#LSS	m	y	$t24
+	lw	$t0	-8($fp)
+	lw	$t1	-24($fp)
+	slt	$t0	$t0	$t1
+#JNE	$t24	lable_21	
+	bne	$t0	1	lable_21
+#VPARA	m	quicksort	
+	lw	$t0	-8($fp)
+	sw	$t0	($sp)
+	subi	$sp	$sp	4
+#VPARA	y	quicksort	
+	lw	$t0	-24($fp)
+	sw	$t0	($sp)
+	subi	$sp	$sp	4
+#CALL	quicksort		
+	jal	quicksort
+#JMP		lable_20	
+	j	lable_20
+#LAB		lable_21	
+lable_21:
+#LAB		lable_20	
+lable_20:
+__FEND_LAB_3:
+	lw	$ra	-4($fp)
+	add	$sp	$fp	$0
+	addi	$sp	$sp	8
+	lw	$fp	($fp)
+	jr	$ra	
+_END_3:
+_Start:
+__FSTART_LAB_4:
+	sw	$fp	($sp)
+	add	$fp	$sp	$0
+	subi	$sp	$sp	4
+	sw	$ra	($sp)
+	subi	$sp	$sp	4
+	subi	$sp	$sp	4
+	subi	$sp	$sp	4
+#LSS	i	10	$t25
+	subi	$sp	$sp	4
+#PLUS	j	1	$t26
+	subi	$sp	$sp	4
+#MINU	10	i	$t27
+	subi	$sp	$sp	4
+#PLUS	i	1	$t28
+	subi	$sp	$sp	4
+#MINU	0	8	$t29
+	subi	$sp	$sp	4
+#MINU	0	1	$t30
+	subi	$sp	$sp	4
+#MINU	0	10	$t31
+	subi	$sp	$sp	4
+#CALL	choose_pivot		$t32
+	subi	$sp	$sp	4
+#MINU	$t32	i	$t33
+	subi	$sp	$sp	4
+#CALL	choose_pivot		$t34
+	subi	$sp	$sp	4
+#CALL	choose_pivot		$t35
+	subi	$sp	$sp	4
+#MULT	1	-1	$t36
+	subi	$sp	$sp	4
+#MINU	0	9	$t37
+	subi	$sp	$sp	4
+#MINU	0	100	$t38
+	subi	$sp	$sp	4
+#PLUS	1	1	$t39
+	subi	$sp	$sp	4
+#PLUS	$t39	1	$t40
+	subi	$sp	$sp	4
+#PLUS	$t40	1	$t41
+	subi	$sp	$sp	4
+#PLUS	$t41	1	$t42
+	subi	$sp	$sp	4
+#PLUS	i	5	$t43
+	subi	$sp	$sp	4
+#AVALUE	list	$t43	$t44
+	subi	$sp	$sp	4
+#AVALUE	list	0	$t45
+	subi	$sp	$sp	4
+#AVALUE	list	5	$t46
+	subi	$sp	$sp	4
+#BECOM	0		i
+	li	$t0	0
+	sw	$t0	-12($fp)
+#BECOM	0		j
+	li	$t0	0
+	sw	$t0	-8($fp)
+#LAB		lable_22	
+lable_22:
+#LSS	i	10	$t25
+	lw	$t0	-12($fp)
+	li	$t1	10
+	slt	$t0	$t0	$t1
+#JNE	$t25	lable_23	
+	bne	$t0	1	lable_23
+#JMP		lable_25	
+	j	lable_25
+#LAB		lable_24	
+lable_24:
+#PLUS	j	1	$t26
+	lw	$t0	-8($fp)
+	li	$t1	1
+	add	$t0	$t0	$t1
+	sw	$t0	-20($fp)
+#BECOM	$t26		j
+	lw	$t0	-20($fp)
+	sw	$t0	-8($fp)
+#JMP		lable_22	
+	j	lable_22
+#LAB		lable_25	
+lable_25:
+#MINU	10	i	$t27
+	li	$t0	10
+	lw	$t1	-12($fp)
+	sub	$t0	$t0	$t1
+	sw	$t0	-24($fp)
+#VARRAY	$t27	i	list
+	lw	$t1	-12($fp)
+	mul	$t1	$t1	4
+	addi	$t1	$t1	8
+	add	$t1	$t1	$t9
+	lw	$t0	-24($fp)
+	sw	$t0	0($t1)
+#PLUS	i	1	$t28
+	lw	$t0	-12($fp)
+	li	$t1	1
+	add	$t0	$t0	$t1
+	sw	$t0	-28($fp)
+#BECOM	$t28		i
+	lw	$t0	-28($fp)
+	sw	$t0	-12($fp)
+#JMP		lable_24	
+	j	lable_24
+#LAB		lable_23	
+lable_23:
+#VPARA	10	printlist	
+	li	$t0	10
+	sw	$t0	($sp)
+	subi	$sp	$sp	4
+#CALL	printlist		
+	jal	printlist
+#VARRAY	16	1	list
+	li	$t0	16
+	sw	$t0	12($t9)
+#VARRAY	3	2	list
+	li	$t0	3
+	sw	$t0	16($t9)
+#MINU	0	8	$t29
+	li	$t0	0
+	li	$t1	8
+	sub	$t0	$t0	$t1
+	sw	$t0	-32($fp)
+#VARRAY	$t29	3	list
+	lw	$t0	-32($fp)
+	sw	$t0	20($fp)
+#VARRAY	40	4	list
+	li	$t0	40
+	sw	$t0	24($t9)
+#MINU	0	1	$t30
+	li	$t0	0
+	li	$t1	1
+	sub	$t0	$t0	$t1
+	sw	$t0	-36($fp)
+#VARRAY	$t30	5	list
+	lw	$t0	-36($fp)
+	sw	$t0	28($fp)
+#VARRAY	2	6	list
+	li	$t0	2
+	sw	$t0	32($t9)
+#MINU	0	10	$t31
+	li	$t0	0
+	li	$t1	10
+	sub	$t0	$t0	$t1
+	sw	$t0	-40($fp)
+#VARRAY	$t31	7	list
+	lw	$t0	-40($fp)
+	sw	$t0	36($fp)
+#VPARA	10	printlist	
+	li	$t0	10
+	sw	$t0	($sp)
+	subi	$sp	$sp	4
+#CALL	printlist		
+	jal	printlist
+#BECOM	1		i
+	li	$t0	1
+	sw	$t0	-12($fp)
+#VPARA	0	choose_pivot	
+	li	$t0	0
+	sw	$t0	($sp)
+	subi	$sp	$sp	4
+#VPARA	1	choose_pivot	
+	li	$t0	1
+	sw	$t0	($sp)
+	subi	$sp	$sp	4
+#VPARA	1	choose_pivot	
+	li	$t0	1
+	sw	$t0	($sp)
+	subi	$sp	$sp	4
+#CALL	choose_pivot		$t32
+	jal	choose_pivot
+	sw	$v0	-44($fp)
+#MINU	$t32	i	$t33
+	lw	$t0	-44($fp)
+	lw	$t1	-12($fp)
+	sub	$t0	$t0	$t1
+	sw	$t0	-48($fp)
+#VPARA	$t33	choose_pivot	
+	lw	$t0	-48($fp)
+	sw	$t0	($sp)
+	subi	$sp	$sp	4
+#CALL	choose_pivot		$t34
+	jal	choose_pivot
+	sw	$v0	-52($fp)
+#VPARA	$t34	quicksort	
+	lw	$t0	-52($fp)
+	sw	$t0	($sp)
+	subi	$sp	$sp	4
+#VPARA	9	choose_pivot	
+	li	$t0	9
+	sw	$t0	($sp)
+	subi	$sp	$sp	4
+#VPARA	9	choose_pivot	
+	li	$t0	9
+	sw	$t0	($sp)
+	subi	$sp	$sp	4
+#CALL	choose_pivot		$t35
+	jal	choose_pivot
+	sw	$v0	-56($fp)
+#VPARA	$t35	quicksort	
+	lw	$t0	-56($fp)
+	sw	$t0	($sp)
+	subi	$sp	$sp	4
+#CALL	quicksort		
+	jal	quicksort
+#PRINTF	 		
+	li	$v0	11
+	li	$a0	32
+	syscall
+li $v0, 4 # system call code for print_str
+la $a0, NewLine
+syscall # print the string
+#MULT	1	-1	$t36
+	li	$t0	1
+	li	$t1	-1
+	mul	$t0	$t0	$t1
+	sw	$t0	-60($fp)
+#PRINTF		$t36	
+	li	$v0	1
+	lw	$a0	-60($fp)
+	syscall
+li $v0, 4 # system call code for print_str
+la $a0, NewLine
+syscall # print the string
+#PRINTF	 		
+	li	$v0	11
+	li	$a0	32
+	syscall
+li $v0, 4 # system call code for print_str
+la $a0, NewLine
+syscall # print the string
+#VPARA	10	printlist	
+	li	$t0	10
+	sw	$t0	($sp)
+	subi	$sp	$sp	4
+#CALL	printlist		
+	jal	printlist
+#PRINTF	 		
+	li	$v0	11
+	li	$a0	32
+	syscall
+li $v0, 4 # system call code for print_str
+la $a0, NewLine
+syscall # print the string
+#VARRAY	0	5	list
+	li	$t0	0
+	sw	$t0	28($t9)
+#MINU	0	9	$t37
+	li	$t0	0
+	li	$t1	9
+	sub	$t0	$t0	$t1
+	sw	$t0	-64($fp)
+#VARRAY	$t37	6	list
+	lw	$t0	-64($fp)
+	sw	$t0	32($fp)
+#MINU	0	100	$t38
+	li	$t0	0
+	li	$t1	100
+	sub	$t0	$t0	$t1
+	sw	$t0	-68($fp)
+#VARRAY	$t38	9	list
+	lw	$t0	-68($fp)
+	sw	$t0	44($fp)
+#VPARA	10	printlist	
+	li	$t0	10
+	sw	$t0	($sp)
+	subi	$sp	$sp	4
+#CALL	printlist		
+	jal	printlist
+#PRINTF	 		
+	li	$v0	11
+	li	$a0	32
+	syscall
+li $v0, 4 # system call code for print_str
+la $a0, NewLine
+syscall # print the string
+#PLUS	1	1	$t39
+	li	$t0	1
+	li	$t1	1
+	add	$t0	$t0	$t1
+	sw	$t0	-72($fp)
+#PLUS	$t39	1	$t40
+	lw	$t0	-72($fp)
+	li	$t1	1
+	add	$t0	$t0	$t1
+	sw	$t0	-76($fp)
+#PLUS	$t40	1	$t41
+	lw	$t0	-76($fp)
+	li	$t1	1
+	add	$t0	$t0	$t1
+	sw	$t0	-80($fp)
+#PLUS	$t41	1	$t42
+	lw	$t0	-80($fp)
+	li	$t1	1
+	add	$t0	$t0	$t1
+	sw	$t0	-84($fp)
+#VPARA	$t42	quicksort	
+	lw	$t0	-84($fp)
+	sw	$t0	($sp)
+	subi	$sp	$sp	4
+#VPARA	9	quicksort	
+	li	$t0	9
+	sw	$t0	($sp)
+	subi	$sp	$sp	4
+#CALL	quicksort		
+	jal	quicksort
+#VPARA	10	printlist	
+	li	$t0	10
+	sw	$t0	($sp)
+	subi	$sp	$sp	4
+#CALL	printlist		
+	jal	printlist
+#BECOM	0		i
+	li	$t0	0
+	sw	$t0	-12($fp)
+#PLUS	i	5	$t43
+	lw	$t0	-12($fp)
+	li	$t1	5
+	add	$t0	$t0	$t1
+	sw	$t0	-88($fp)
+#AVALUE	list	$t43	$t44
+	lw	$t1	-88($fp)
+	mul	$t1	$t1	4
+	addi	$t1	$t1	8
+	add	$t1	$t1	$t9
+	lw	$t1	0($t1)
+	sw	$t1	-92($fp)
+#VARRAY	$t44	i	list
+	lw	$t1	-12($fp)
+	mul	$t1	$t1	4
+	addi	$t1	$t1	8
+	add	$t1	$t1	$t9
+	lw	$t0	-92($fp)
+	sw	$t0	0($t1)
+#AVALUE	list	0	$t45
+	lw	$t0	8($t9)
+	sw	$t0	-96($fp)
+#PRINTF		$t45	
+	li	$v0	1
+	lw	$a0	-96($fp)
+	syscall
+li $v0, 4 # system call code for print_str
+la $a0, NewLine
+syscall # print the string
+#AVALUE	list	5	$t46
+	lw	$t0	28($t9)
+	sw	$t0	-100($fp)
+#PRINTF		$t46	
+	li	$v0	1
+	lw	$a0	-100($fp)
+	syscall
+li $v0, 4 # system call code for print_str
+la $a0, NewLine
+syscall # print the string
+__FEND_LAB_4:
+	lw	$ra	-4($fp)
+	add	$sp	$fp	$0
+	addi	$sp	$sp	0
+	lw	$fp	($fp)
+	li	$v0	10
+	syscall

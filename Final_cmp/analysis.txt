@@ -1,0 +1,582 @@
+This is Procedure
+const int a = 10;
+This is ConstSta
+int list[10];
+This is VarSta
+This is VarDef
+
+int choose_pivot(int i,int j)
+This is rFuncDef
+This is Parameters
+{
+   return((i+j) /2);
+This is ComplexSentence
+This is Sentences
+This is Sentence
+This is ReturnSentence
+This is Expression
+This is Item
+This is Factor
+This is Expression
+This is Item
+This is Factor
+This is Item
+This is Factor
+This is Factor
+}
+
+void printlist(int n)
+This is vFuncDef
+This is Parameters
+{
+   int j;
+This is ComplexSentence
+This is VarSta
+This is VarDef
+   int i;
+This is VarDef
+   i = 0;
+This is Sentences
+This is Sentence
+This is BecomeSentence
+This is Expression
+This is Item
+This is Factor
+   for(j=0;i < n;j=j+1){
+This is Sentence
+This is ForSentence
+This is Expression
+This is Item
+This is Factor
+This is Condition
+This is Expression
+This is Item
+This is Factor
+This is Expression
+This is Item
+This is Factor
+This is Sentence
+      printf(list[i]); i = i +1;}
+This is Sentences
+This is Sentence
+This is PrintfSentence
+This is Expression
+This is Item
+This is Factor
+This is Expression
+This is Item
+This is Factor
+This is Sentence
+This is BecomeSentence
+This is Expression
+This is Item
+This is Factor
+This is Item
+This is Factor
+}
+
+void quicksort(int m,int n)
+This is vFuncDef
+This is Parameters
+{
+   int key,x,y,z, tmp;
+This is ComplexSentence
+This is VarSta
+This is VarDef
+This is VarDef
+This is VarDef
+This is VarDef
+This is VarDef
+   int test1;
+This is VarDef
+   
+      key = list[choose_pivot(m,n)];
+This is Sentences
+This is Sentence
+This is BecomeSentence
+This is Expression
+This is Item
+This is Factor
+This is Expression
+This is Item
+This is Factor
+This is rFuncCall
+This is valuepara
+This is Expression
+This is Item
+This is Factor
+This is Expression
+This is Item
+This is Factor
+      x = m;
+This is Sentence
+This is BecomeSentence
+This is Expression
+This is Item
+This is Factor
+      y = n;
+This is Sentence
+This is BecomeSentence
+This is Expression
+This is Item
+This is Factor
+      for(test1=0;x <= y;test1=test1+1)
+This is Sentence
+This is ForSentence
+This is Expression
+This is Item
+This is Factor
+This is Condition
+This is Expression
+This is Item
+This is Factor
+This is Expression
+This is Item
+This is Factor
+      {
+This is Sentence
+          for(test1=0;key <list[y];test1=test1+1) y = y -1;
+This is Sentences
+This is Sentence
+This is ForSentence
+This is Expression
+This is Item
+This is Factor
+This is Condition
+This is Expression
+This is Item
+This is Factor
+This is Expression
+This is Item
+This is Factor
+This is Expression
+This is Item
+This is Factor
+This is Sentence
+This is BecomeSentence
+This is Expression
+This is Item
+This is Factor
+This is Item
+This is Factor
+          for(test1=0;key > list[x];test1=test1+1) x = x + 1;
+This is Sentence
+This is ForSentence
+This is Expression
+This is Item
+This is Factor
+This is Condition
+This is Expression
+This is Item
+This is Factor
+This is Expression
+This is Item
+This is Factor
+This is Expression
+This is Item
+This is Factor
+This is Sentence
+This is BecomeSentence
+This is Expression
+This is Item
+This is Factor
+This is Item
+This is Factor
+          if(x<=y){
+This is Sentence
+This is IfSentence
+This is Condition
+This is Expression
+This is Item
+This is Factor
+This is Expression
+This is Item
+This is Factor
+This is Sentence
+        tmp = list[x];
+This is Sentences
+This is Sentence
+This is BecomeSentence
+This is Expression
+This is Item
+This is Factor
+This is Expression
+This is Item
+This is Factor
+                list[x] = list[y];
+This is Sentence
+This is BecomeSentence
+This is Expression
+This is Item
+This is Factor
+This is Expression
+This is Item
+This is Factor
+This is Expression
+This is Item
+This is Factor
+                list[y] = tmp;
+This is Sentence
+This is BecomeSentence
+This is Expression
+This is Item
+This is Factor
+This is Expression
+This is Item
+This is Factor
+                x = x +1;
+This is Sentence
+This is BecomeSentence
+This is Expression
+This is Item
+This is Factor
+This is Item
+This is Factor
+                y = y-1;
+This is Sentence
+This is BecomeSentence
+This is Expression
+This is Item
+This is Factor
+This is Item
+This is Factor
+      }
+      }
+      if(x<n)
+This is Sentence
+This is IfSentence
+This is Condition
+This is Expression
+This is Item
+This is Factor
+This is Expression
+This is Item
+This is Factor
+      quicksort(x,n);
+This is Sentence
+This is vFuncCall
+This is valuepara
+This is Expression
+This is Item
+This is Factor
+This is Expression
+This is Item
+This is Factor
+      if(m<y)
+This is Sentence
+This is IfSentence
+This is Condition
+This is Expression
+This is Item
+This is Factor
+This is Expression
+This is Item
+This is Factor
+      quicksort(m,y);
+This is Sentence
+This is vFuncCall
+This is valuepara
+This is Expression
+This is Item
+This is Factor
+This is Expression
+This is Item
+This is Factor
+}
+
+
+void main(){
+	int j;
+This is ComplexSentence
+This is VarSta
+This is VarDef
+     int i;
+This is VarDef
+     i = 0;
+This is Sentences
+This is Sentence
+This is BecomeSentence
+This is Expression
+This is Item
+This is Factor
+     for (j=0;i<10;j=j+1) {
+This is Sentence
+This is ForSentence
+This is Expression
+This is Item
+This is Factor
+This is Condition
+This is Expression
+This is Item
+This is Factor
+This is Expression
+This is Item
+This is Factor
+This is Sentence
+    list[i] = 10 - i;
+This is Sentences
+This is Sentence
+This is BecomeSentence
+This is Expression
+This is Item
+This is Factor
+This is Expression
+This is Item
+This is Factor
+This is Item
+This is Factor
+        i = i + 1;
+This is Sentence
+This is BecomeSentence
+This is Expression
+This is Item
+This is Factor
+This is Item
+This is Factor
+     }
+	printlist(10);
+This is Sentence
+This is vFuncCall
+This is valuepara
+This is Expression
+This is Item
+This is Factor
+     list[1] = 16;
+This is Sentence
+This is BecomeSentence
+This is Expression
+This is Item
+This is Factor
+This is Expression
+This is Item
+This is Factor
+      list[2] = 3;
+This is Sentence
+This is BecomeSentence
+This is Expression
+This is Item
+This is Factor
+This is Expression
+This is Item
+This is Factor
+    list[3] = -8;
+This is Sentence
+This is BecomeSentence
+This is Expression
+This is Item
+This is Factor
+This is Expression
+This is Item
+This is Factor
+    list[4] = 40;
+This is Sentence
+This is BecomeSentence
+This is Expression
+This is Item
+This is Factor
+This is Expression
+This is Item
+This is Factor
+    list[5] = -1;
+This is Sentence
+This is BecomeSentence
+This is Expression
+This is Item
+This is Factor
+This is Expression
+This is Item
+This is Factor
+    list[6] = 2;
+This is Sentence
+This is BecomeSentence
+This is Expression
+This is Item
+This is Factor
+This is Expression
+This is Item
+This is Factor
+    list[7] = -10;
+This is Sentence
+This is BecomeSentence
+This is Expression
+This is Item
+This is Factor
+This is Expression
+This is Item
+This is Factor
+      printlist(10);
+This is Sentence
+This is vFuncCall
+This is valuepara
+This is Expression
+This is Item
+This is Factor
+     i = 1;
+This is Sentence
+This is BecomeSentence
+This is Expression
+This is Item
+This is Factor
+     quicksort(choose_pivot(0, choose_pivot(1, 1) - i), choose_pivot(9, 9));
+This is Sentence
+This is vFuncCall
+This is valuepara
+This is Expression
+This is Item
+This is Factor
+This is rFuncCall
+This is valuepara
+This is Expression
+This is Item
+This is Factor
+This is Expression
+This is Item
+This is Factor
+This is rFuncCall
+This is valuepara
+This is Expression
+This is Item
+This is Factor
+This is Expression
+This is Item
+This is Factor
+This is Item
+This is Factor
+This is Expression
+This is Item
+This is Factor
+This is rFuncCall
+This is valuepara
+This is Expression
+This is Item
+This is Factor
+This is Expression
+This is Item
+This is Factor
+     printf(" ");
+This is Sentence
+This is PrintfSentence
+     printf(1*-1);
+This is Sentence
+This is PrintfSentence
+This is Expression
+This is Item
+This is Factor
+This is Factor
+     printf(" ");
+This is Sentence
+This is PrintfSentence
+     printlist(10);
+This is Sentence
+This is vFuncCall
+This is valuepara
+This is Expression
+This is Item
+This is Factor
+     printf(" ");
+This is Sentence
+This is PrintfSentence
+     list[5] = 0;
+This is Sentence
+This is BecomeSentence
+This is Expression
+This is Item
+This is Factor
+This is Expression
+This is Item
+This is Factor
+     list[6] = -9;
+This is Sentence
+This is BecomeSentence
+This is Expression
+This is Item
+This is Factor
+This is Expression
+This is Item
+This is Factor
+     list[9] = -100;
+This is Sentence
+This is BecomeSentence
+This is Expression
+This is Item
+This is Factor
+This is Expression
+This is Item
+This is Factor
+     printlist(10);
+This is Sentence
+This is vFuncCall
+This is valuepara
+This is Expression
+This is Item
+This is Factor
+     printf(" ");
+This is Sentence
+This is PrintfSentence
+     quicksort(1+1+1+(1)+1, 9);
+This is Sentence
+This is vFuncCall
+This is valuepara
+This is Expression
+This is Item
+This is Factor
+This is Item
+This is Factor
+This is Item
+This is Factor
+This is Item
+This is Factor
+This is Expression
+This is Item
+This is Factor
+This is Item
+This is Factor
+This is Expression
+This is Item
+This is Factor
+     printlist(10);
+This is Sentence
+This is vFuncCall
+This is valuepara
+This is Expression
+This is Item
+This is Factor
+     i = 0;
+This is Sentence
+This is BecomeSentence
+This is Expression
+This is Item
+This is Factor
+     list[i] = list[i + 5];
+This is Sentence
+This is BecomeSentence
+This is Expression
+This is Item
+This is Factor
+This is Expression
+This is Item
+This is Factor
+This is Expression
+This is Item
+This is Factor
+This is Item
+This is Factor
+     printf(list[0]);
+This is Sentence
+This is PrintfSentence
+This is Expression
+This is Item
+This is Factor
+This is Expression
+This is Item
+This is Factor
+     printf(list[5]);
+This is Sentence
+This is PrintfSentence
+This is Expression
+This is Item
+This is Factor
+This is Expression
+This is Item
+This is Factor
+}

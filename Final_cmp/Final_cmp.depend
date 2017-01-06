@@ -1,0 +1,34 @@
+# depslib dependency file v1.0
+1483123640 source:f:\mydocument\codeblocks_file\final_cmp\main.cpp
+	<iostream>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<vector>
+	<sstream>
+	<string>
+	<fstream>
+	<algorithm>
+
+1483154853 source:c:\users\lenovo\desktop\14061003_刘重伟_mips\final_cmp\main.cpp
+	<iostream>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<vector>
+	<sstream>
+	<string>
+	<fstream>
+	<algorithm>
+
+1483506892 source:f:\mydocument\files\编译技术课程设计\14061003_刘重伟_mips\源代码\final_cmp\main.cpp
+	<iostream>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<vector>
+	<sstream>
+	<string>
+	<fstream>
+	<algorithm>
+

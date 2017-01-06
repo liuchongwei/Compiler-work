@@ -1,0 +1,201 @@
+CONSTOBJ	INTSY	a	10
+AVAROBJ	INTSY	list	10
+FUNCOBJ	INTSY	choose_pivot	2
+PARA	INTSY	i	1
+PARA	INTSY	j	2
+PLUS	i	j	$t0
+DIV	$t0	2	$t1
+RET		$t1	
+END		choose_pivot	
+FUNCOBJ	VOIDSY	printlist	1
+PARA	INTSY	n	1
+VAROBJ	INTSY	j	
+VAROBJ	INTSY	i	
+BECOM	0		i
+BECOM	0		j
+LAB		lable_0	
+LSS	i	n	$t2
+JNE	$t2	lable_1	
+JMP		lable_3	
+LAB		lable_2	
+PLUS	j	1	$t3
+BECOM	$t3		j
+JMP		lable_0	
+LAB		lable_3	
+AVALUE	list	i	$t4
+PRINTF		$t4	
+PLUS	i	1	$t5
+BECOM	$t5		i
+JMP		lable_2	
+LAB		lable_1	
+END		printlist	
+FUNCOBJ	VOIDSY	quicksort	2
+PARA	INTSY	m	1
+PARA	INTSY	n	2
+VAROBJ	INTSY	key	
+VAROBJ	INTSY	x	
+VAROBJ	INTSY	y	
+VAROBJ	INTSY	z	
+VAROBJ	INTSY	tmp	
+VAROBJ	INTSY	test1	
+VPARA	m	choose_pivot	
+VPARA	n	choose_pivot	
+CALL	choose_pivot		$t6
+AVALUE	list	$t6	$t7
+BECOM	$t7		key
+BECOM	m		x
+BECOM	n		y
+BECOM	0		test1
+LAB		lable_4	
+LEQ	x	y	$t8
+JNE	$t8	lable_5	
+JMP		lable_7	
+LAB		lable_6	
+PLUS	test1	1	$t9
+BECOM	$t9		test1
+JMP		lable_4	
+LAB		lable_7	
+BECOM	0		test1
+LAB		lable_8	
+AVALUE	list	y	$t10
+LSS	key	$t10	$t11
+JNE	$t11	lable_9	
+JMP		lable_11	
+LAB		lable_10	
+PLUS	test1	1	$t12
+BECOM	$t12		test1
+JMP		lable_8	
+LAB		lable_11	
+MINU	y	1	$t13
+BECOM	$t13		y
+JMP		lable_10	
+LAB		lable_9	
+BECOM	0		test1
+LAB		lable_12	
+AVALUE	list	x	$t14
+GTR	key	$t14	$t15
+JNE	$t15	lable_13	
+JMP		lable_15	
+LAB		lable_14	
+PLUS	test1	1	$t16
+BECOM	$t16		test1
+JMP		lable_12	
+LAB		lable_15	
+PLUS	x	1	$t17
+BECOM	$t17		x
+JMP		lable_14	
+LAB		lable_13	
+LEQ	x	y	$t18
+JNE	$t18	lable_17	
+AVALUE	list	x	$t19
+BECOM	$t19		tmp
+AVALUE	list	y	$t20
+VARRAY	$t20	x	list
+VARRAY	tmp	y	list
+PLUS	x	1	$t21
+BECOM	$t21		x
+MINU	y	1	$t22
+BECOM	$t22		y
+JMP		lable_16	
+LAB		lable_17	
+LAB		lable_16	
+JMP		lable_6	
+LAB		lable_5	
+LSS	x	n	$t23
+JNE	$t23	lable_19	
+VPARA	x	quicksort	
+VPARA	n	quicksort	
+CALL	quicksort		
+JMP		lable_18	
+LAB		lable_19	
+LAB		lable_18	
+LSS	m	y	$t24
+JNE	$t24	lable_21	
+VPARA	m	quicksort	
+VPARA	y	quicksort	
+CALL	quicksort		
+JMP		lable_20	
+LAB		lable_21	
+LAB		lable_20	
+END		quicksort	
+FUNCOBJ	VOIDSY	main	
+VAROBJ	INTSY	j	
+VAROBJ	INTSY	i	
+BECOM	0		i
+BECOM	0		j
+LAB		lable_22	
+LSS	i	10	$t25
+JNE	$t25	lable_23	
+JMP		lable_25	
+LAB		lable_24	
+PLUS	j	1	$t26
+BECOM	$t26		j
+JMP		lable_22	
+LAB		lable_25	
+MINU	10	i	$t27
+VARRAY	$t27	i	list
+PLUS	i	1	$t28
+BECOM	$t28		i
+JMP		lable_24	
+LAB		lable_23	
+VPARA	10	printlist	
+CALL	printlist		
+VARRAY	16	1	list
+VARRAY	3	2	list
+MINU	0	8	$t29
+VARRAY	$t29	3	list
+VARRAY	40	4	list
+MINU	0	1	$t30
+VARRAY	$t30	5	list
+VARRAY	2	6	list
+MINU	0	10	$t31
+VARRAY	$t31	7	list
+VPARA	10	printlist	
+CALL	printlist		
+BECOM	1		i
+VPARA	0	choose_pivot	
+VPARA	1	choose_pivot	
+VPARA	1	choose_pivot	
+CALL	choose_pivot		$t32
+MINU	$t32	i	$t33
+VPARA	$t33	choose_pivot	
+CALL	choose_pivot		$t34
+VPARA	$t34	quicksort	
+VPARA	9	choose_pivot	
+VPARA	9	choose_pivot	
+CALL	choose_pivot		$t35
+VPARA	$t35	quicksort	
+CALL	quicksort		
+PRINTF	 		
+MULT	1	-1	$t36
+PRINTF		$t36	
+PRINTF	 		
+VPARA	10	printlist	
+CALL	printlist		
+PRINTF	 		
+VARRAY	0	5	list
+MINU	0	9	$t37
+VARRAY	$t37	6	list
+MINU	0	100	$t38
+VARRAY	$t38	9	list
+VPARA	10	printlist	
+CALL	printlist		
+PRINTF	 		
+PLUS	1	1	$t39
+PLUS	$t39	1	$t40
+PLUS	$t40	1	$t41
+PLUS	$t41	1	$t42
+VPARA	$t42	quicksort	
+VPARA	9	quicksort	
+CALL	quicksort		
+VPARA	10	printlist	
+CALL	printlist		
+BECOM	0		i
+PLUS	i	5	$t43
+AVALUE	list	$t43	$t44
+VARRAY	$t44	i	list
+AVALUE	list	0	$t45
+PRINTF		$t45	
+AVALUE	list	5	$t46
+PRINTF		$t46	
+END			main

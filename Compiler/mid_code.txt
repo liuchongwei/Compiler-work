@@ -1,4 +1,0 @@
-FUNCOBJ	VOIDSY	main	
-PRINTF	A		
-PRINTF	     B		
-END			main

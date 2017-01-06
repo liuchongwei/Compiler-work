@@ -1,6 +1,0 @@
-int a;
-char b , a;
-void main(){
-	printf("A");
-	printf("     B");
-}
